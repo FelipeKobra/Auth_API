@@ -38,9 +38,16 @@ export default class RedefinePasswordTokensController {
           newToken.token
         )
 
+        const emailVizualizer = await redefinePasswordTokensServices.sendToken(
+          user.email,
+          user.name,
+          tokenURL
+        )
+
+        if (emailVizualizer instanceof HttpError) return next(emailVizualizer)
+
         return res.json({
-          message: `Faça um POST Request para o link fornecido, com a sua nova senha no campo 'password' do corpo da requisição`,
-          link: tokenURL,
+          message: `Redefinição de senha enviada para o seu email, ou pode ser vizualizada nesse link ${emailVizualizer}`,
         })
       }
 
@@ -50,9 +57,17 @@ export default class RedefinePasswordTokensController {
         const tokenURL = redefinePasswordTokensServices.createTokenURL(
           token.token
         )
+
+        const emailVizualizer = await redefinePasswordTokensServices.sendToken(
+          user.email,
+          user.name,
+          tokenURL
+        )
+
+        if (emailVizualizer instanceof HttpError) return next(emailVizualizer)
+
         return res.json({
-          message: `O seu token ainda não expirou, tente enviar novamente o POST Request para o link fornecido, lembrando de adicionar o campo 'password',com sua nova senha, no corpo da requisição`,
-          link: tokenURL,
+          message: `O token ainda é válido verifique seu email novamente, ou verifique nesse link ${emailVizualizer}`,
         })
       }
 
@@ -63,9 +78,17 @@ export default class RedefinePasswordTokensController {
       const tokenURL = redefinePasswordTokensServices.createTokenURL(
         newToken.token
       )
+
+      const emailVizualizer = await redefinePasswordTokensServices.sendToken(
+        user.email,
+        user.name,
+        tokenURL
+      )
+
+      if (emailVizualizer instanceof HttpError) return next(emailVizualizer)
+
       return res.json({
-        message: `Token atualizado, pode realizar a requisição novamente no link fornecido, adicionando o campo 'password', com sua nova senha, no corpo da requisição`,
-        link: tokenURL,
+        message: `Nova redefinição de senha enviada para o seu email, ou pode ser vizualizada nesse link ${emailVizualizer}`,
       })
     } catch (error: any) {
       next(createError(500, error))
@@ -135,7 +158,7 @@ export default class RedefinePasswordTokensController {
         }),
       ])
 
-      return res.json({ message: 'Senha trocada com sucesso!' })
+      return res.json({ message: 'Senha alterada com sucesso!' })
     } catch (error: any) {
       return next(createError(500, error))
     }

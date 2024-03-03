@@ -39,7 +39,6 @@ export default class EmailConfirmTokenController {
       const emailVizualizer = await emailConfirmToken.sendToken(
         user.email,
         user.name,
-        'Token de Confirmação de Email',
         foundToken.tokenObject.token
       )
 

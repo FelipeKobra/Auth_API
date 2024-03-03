@@ -31,8 +31,18 @@ export default class emailManager {
     titulo,
     tokenURL,
     receiverName,
+    type,
   }: sendEmailType) {
     try {
+      let message = `A duração do token é de 10 minutos <br>
+      <a href=${tokenURL} rel='noopener noreferrer'>Clique aqui para verificar seu email</a>`
+
+      if (type === 'PasswordReset')
+        message = `A duração do token é de 10 minutos <br>
+      Envie um POST Request ,com o campo <span style="color: red;">password</span> e sua <span style="color: red;">nova senha</span>, para o endpoint abaixo: <br>
+      <p style="color: blue;">${tokenURL}</p>
+`
+
       const transporter = await this.createTransporter()
 
       const emailContent = {
@@ -40,8 +50,7 @@ export default class emailManager {
         to: `${receiverName} <${receiverEmail}>`,
         subject: `Token da Auth API sobre ${titulo}`,
         html: `<p>
-        A duração do token é de 10 minutos <br>
-        <a href=${tokenURL} rel="noopener noreferrer">Clique aqui para verificar seu email</a>
+        ${message}
         </p>`,
       }
 

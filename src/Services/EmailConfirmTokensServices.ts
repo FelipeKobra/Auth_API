@@ -9,7 +9,6 @@ export default class EmailConfirmTokenService {
   public async sendToken(
     receiverEmail: string,
     receiverName: string,
-    titulo: 'Token de Confirmação de Email' | 'Token de Recuperação de Senha',
     token: string
   ) {
     try {
@@ -18,8 +17,9 @@ export default class EmailConfirmTokenService {
       const emailVizualizer = await emailManagerInstance.sendTokenEmail({
         receiverEmail,
         receiverName,
-        titulo,
+        titulo:'Token de Confirmação de Email',
         tokenURL,
+        type: 'EmailConfirm',
       })
 
       if (typeof emailVizualizer !== 'string') {

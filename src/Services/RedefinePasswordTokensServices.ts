@@ -55,17 +55,15 @@ export default class RedefinePasswordTokensServices {
   public async sendToken(
     receiverEmail: string,
     receiverName: string,
-    titulo: 'Token de Confirmação de Email' | 'Token de Recuperação de Senha',
-    token: string
+    tokenURL: URL
   ) {
     try {
-      const tokenURL = new URL(baseUrl + `/redefinePassword` + token)
-
       const emailVizualizer = await emailManagerInstance.sendTokenEmail({
         receiverEmail,
         receiverName,
-        titulo,
+        titulo: 'Token de Recuperação de Senha',
         tokenURL,
+        type: 'PasswordReset',
       })
 
       if (typeof emailVizualizer !== 'string') {

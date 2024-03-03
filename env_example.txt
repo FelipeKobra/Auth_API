@@ -1,0 +1,20 @@
+### Express Config
+PORT=3000
+NODE_ENV=development
+
+### Database Config
+POSTGRE_DATABASE= 
+POSTGRE_USERNAME= 
+POSTGRE_PASSWORD= 
+POSTGRE_HOST=host.docker.internal
+POSTGRE_PORT=5432
+POSTGRE_DIALECT=postgres
+
+
+### JWT Config
+ACCESS_COOKIE_NAME= 
+REFRESH_COOKIE_NAME= 
+
+### Google OAuth
+GOOGLE_CLIENT_ID= 
+GOOGLE_CLIENT_SECRET= 

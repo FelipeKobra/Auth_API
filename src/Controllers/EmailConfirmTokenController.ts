@@ -50,7 +50,7 @@ export default class EmailConfirmTokenController {
         )
 
         return res.json({
-          message: `Token enviado para seu email, ou pode ser vizualizado nessa URL: ${emailVizualizer}`,
+          message: `Confirme seu email para continuar. Um token foi enviado para seu email, ou pode ser vizualizado nessa URL em caso de teste: ${emailVizualizer}`,
         })
       } else {
         return next(emailVizualizer)

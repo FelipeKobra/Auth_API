@@ -48,8 +48,8 @@ npm install
 
 3. Adicionar as variáveis de ambiente necessárias
 
-Deixei um arquivo chamado `env_example.txt` na pasta raiz do diretório onde possui todas as variáveis de ambiente necessárias. <br>
-É necessário somente adicionar suas informações no lugar e trocar seu nome para `.env`
+Deixei um arquivo chamado `env_example.txt` na pasta raiz do diretório, onde possui todas as variáveis de ambiente necessárias. <br>
+É necessário somente adicionar suas informações no lugar e trocar o nome do arquivo para `.env`
 
 ## Instalação com Docker
 1. Baixar a imagem
@@ -57,18 +57,18 @@ Deixei um arquivo chamado `env_example.txt` na pasta raiz do diretório onde pos
 docker pull felipekobra/auth_api
 ```
 
-2. Criar um arquivo com suas variáveis de ambiente
+2. Criar um arquivo com suas variáveis de ambiente <br>
 
 Deixei um arquivo chamado `env_example.txt` na pasta raiz do diretório onde possui todas as variáveis de ambiente necessárias. <br>
-É necessário somente adicionar suas informações no lugar e trocar seu nome para `.env` 
+É necessário somente adicionar suas informações no lugar e trocar o nome do arquivo para `.env` 
 <br><br>
-*OBS:* Caso seu banco de dados esteja hospedado no `localhost`, troque o valor nas variáveis padrão, de `localhost` para `host.docker.internal` 
+*OBS:* Caso seu banco de dados esteja hospedado no `localhost`, troque o valor nas variáveis de ambiente, de `localhost` para `host.docker.internal` 
 
-3. Iniciar o contêiner
+3. Iniciar o contêiner <br>
    
   - Utilizei o parâmetro `--env-file` pela facilidade de enviar as variáveis de ambiente.
   - Verifique se suas variáveis de ambiente estão formatadas corretamente
-    - Sem espaços entre o nome da variável, o "=" e o valor da variável
+    - Sem espaços entre o nome da variável, o `=` e o valor da variável
     - Somente utilizar `""` quando tiver um espaço no valor da variável, já que em muitos momentos ele pode considerar as `""` como parte do valor
   - No meu caso adicionei a porta `3000` como `PORT` em meu `.env`, por isso utilizei o comando abaixo, mas caso queira trocar não há problema, apesar de estar como `EXPOSE` no `Dockerfile`
 ```bash
@@ -81,7 +81,7 @@ docker run --env-file .env -p 3000:3000 felipekobra/auth_api
 `POST`
 `http://localhost:3000/user/login`
 
-Valores Necessários no `body`
+Campos necessários no `body`
 - email
 - password
 
@@ -89,7 +89,7 @@ Valores Necessários no `body`
 `POST`
 `http://localhost:3000/user/register`
 
-Valores Necessários no `body`
+Campos necessários no `body`
 - email
 - password
 - name
@@ -106,7 +106,7 @@ Essa rota pode ser acessada de duas formas:
 `POST`
 `http://localhost:3000/redefinePassword/email`
 
-Valores Necessários no `body`
+Campos necessários no `body`
 - email
 
 ### Google OAuth
@@ -118,13 +118,15 @@ Para acessar esse método de autenticação, basta entrar com o link abaixo no n
 *OBS:* Esse é o link que deve ser acessado por padrão em meu repositório, pois em meu projeto no Google Cloud adicionei como:
 - Endpoint Padrão: `http://localhost:3000/auth/google`
 - Endpoint de Callback: `http://localhost:3000/auth/google/callback`
+<br>
 
 ### JWKS
 Normalmente quando se cria chaves assimétricas é importante disponibilizar a chave pública para todos os serviços que utilizam nosso `JWT`<br>
 Portanto disponibilizei um endpoint padrão, e para acessar basta enviar um:
 `GET` `http://localhost:3000/.well-known/jwks.json`
 
-Ou acessar esse link em seu navegador
+Ou acessá-lo em seu navegador
+<br>
 
 # Observações
 - Deixei as chaves assimétricas disponíveis para melhor vizualização do funcionamento para quem nunca utilizou na pasta `certs`

@@ -51,6 +51,8 @@ export const JwtMiddleware: MiddlewareType = async (req, res, next) => {
 
             req.user = user
 
+            if (req.path === '/logout') return next()
+
             if (
               (user.provider === 'local' || !user.provider) &&
               !user.confirmed
@@ -67,6 +69,8 @@ export const JwtMiddleware: MiddlewareType = async (req, res, next) => {
 
         //Caso o usuário exista
         req.user = user
+
+        if (req.path === '/logout') return next()
 
         if (!user.confirmed) {
           return res.redirect(`/confirmEmail/${user.id}`)

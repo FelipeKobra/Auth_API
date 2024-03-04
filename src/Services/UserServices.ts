@@ -10,9 +10,14 @@ import {
   accessTokenCookieName,
   refreshTokenCookieName,
 } from '../data/JwtCookieNames'
+import { HttpError } from 'http-errors'
 import RefreshToken from '../Models/RefreshTokenModel'
 import { publicKey } from '../data/RSAKeys'
-import { getCookie, sendJwtCookie } from '../utils/CookiesUtils'
+import {
+  getCookie,
+  removeJwtCookies,
+  sendJwtCookie,
+} from '../utils/CookiesUtils'
 import jwt from 'jsonwebtoken'
 
 const refreshTokenService = new RefreshTokenService()
@@ -100,6 +105,27 @@ export default class UserService {
           return next()
         }
       )(req, res, next)
+    } catch (error: any) {
+      return next(createError(500, error))
+    }
+  }
+
+  public async Logout(req: Request, res: Response, next: NextFunction) {
+    try {
+      const user = req.user
+
+      if (!user)
+        return next(
+          createError(400, 'Você não está cadastrado para sair de sua conta')
+        )
+
+      const response = await refreshTokenService.removeByUserId(user.id)
+
+      if (response instanceof HttpError) return next(response)
+
+      removeJwtCookies(res)
+
+      return res.json({ messsage: 'Você saiu da sua conta com sucesso' })
     } catch (error: any) {
       return next(createError(500, error))
     }

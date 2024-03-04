@@ -50,4 +50,12 @@ export default class UserController {
       return next(createError(500, error))
     }
   }
+
+  public async logoutUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      await userService.Logout(req, res, next)
+    } catch (error: any) {
+      return next(createError(500, error))
+    }
+  }
 }

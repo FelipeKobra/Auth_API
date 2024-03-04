@@ -8,6 +8,9 @@
     "start": "node dist/index.js",
     "build": "babel --extensions .ts ./src -d dist && npm run copypublic",
     "dev": "nodemon --watch ./**/*.ts --watch ./**/*.js --exec tsx ./src/index.ts",
+    "docker_build": "docker build -t felipekobra/auth_api .",
+    "docker_run": "docker run --name auth_container -p 3000:3000 --rm --env-file .env -e POSTGRE_HOST=host.docker.internal felipekobra/auth_api",
+    "docker_pull": "docker pull felipekobra/auth_api",
     "copypublic": "ncp ./src/public ./dist/public"
   },
   "author": "Felipe Kobra",

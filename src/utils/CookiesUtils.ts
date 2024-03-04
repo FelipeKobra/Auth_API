@@ -1,4 +1,8 @@
 import { Request, Response } from 'express'
+import {
+  accessTokenCookieName,
+  refreshTokenCookieName,
+} from '../data/JwtCookieNames'
 
 export function getCookie(req: Request, name: string) {
   let token: null | string = null
@@ -16,4 +20,9 @@ export function sendJwtCookie(
   if (type === 'Refresh') maxAgeValue = 1000 * 60 * 60 * 24 * 30
 
   res.cookie(name, payload, { maxAge: maxAgeValue, httpOnly: true })
+}
+
+export function removeJwtCookies(res: Response) {
+  res.clearCookie(accessTokenCookieName)
+  res.clearCookie(refreshTokenCookieName)
 }

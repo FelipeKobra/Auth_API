@@ -49,5 +49,5 @@ app.use('/protected', ProtectedRouter)
 app.use(errorHandlerMiddleware)
 
 app.listen(process.env.PORT, () => {
-  console.log('Server Running')
+  console.log(`Server running on PORT ${process.env.PORT}`)
 })

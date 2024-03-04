@@ -66,4 +66,13 @@ export default class RefreshTokenService {
       newRefreshToken,
     }
   }
+
+  public async removeByUserId(userId: number) {
+    try {
+      await RefreshToken.destroy({ where: { user_id: userId } })
+      return true
+    } catch (error: any) {
+      return createError(500, error)
+    }
+  }
 }

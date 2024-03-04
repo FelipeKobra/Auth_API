@@ -52,6 +52,19 @@ npm install
 Deixei um arquivo chamado `env_example.txt` na pasta raiz do diretório, onde possui todas as variáveis de ambiente necessárias. <br>
 É necessário somente adicionar suas informações no lugar e trocar o nome do arquivo para `.env`
 
+4. Comandos de Inicialização
+   - Desenvolvimento
+     ```bash
+     npm run dev
+     ```
+   - Produção
+     ```bash
+     npm run build
+     ```
+     ```bash
+     npm run start
+     ```
+
 ## Instalação com Docker
 1. Baixar a imagem
 ```bash

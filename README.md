@@ -26,6 +26,7 @@ Olá, sou Felipe, e essa é uma backend de autenticação realizada por mim util
   - [Instalação com Docker](#instalação-com-docker)
   - [Endpoints](#endpoints)
     - [Login](#login)
+    - [Logout](#logout)
     - [Registro](#registro)
     - [Rota Protegida](#rota-protegida)
     - [Redefinir Senha](#redefinir-senha)
@@ -61,7 +62,7 @@ docker pull felipekobra/auth_api
 
 Deixei um arquivo chamado `env_example.txt` na pasta raiz do diretório onde possui todas as variáveis de ambiente necessárias. <br>
 É necessário somente adicionar suas informações no lugar e trocar o nome do arquivo para `.env` 
-<br><br>
+<br>
 *OBS:* Caso seu banco de dados esteja hospedado no `localhost`, troque o valor nas variáveis de ambiente, de `localhost` para `host.docker.internal` 
 
 3. Iniciar o contêiner <br>
@@ -84,6 +85,10 @@ docker run --env-file .env -p 3000:3000 felipekobra/auth_api
 Campos necessários no `body`
 - email
 - password
+
+### Logout
+`GET`
+`http://localhost:3000/user/logout`
 
 ### Registro
 `POST`
@@ -131,3 +136,4 @@ Ou acessá-lo em seu navegador
 # Observações
 - Deixei as chaves assimétricas disponíveis para melhor vizualização do funcionamento para quem nunca utilizou na pasta `certs`
 - O método que utilizei para criar a `JWK` está em `src/utils/JwkUtils`, foi o método mais simples que consegui achar para realizar.
+- Deixei scripts personalizados no projeto para melhor utilização do `Docker`, podem ser observados no `package.json`

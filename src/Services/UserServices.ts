@@ -1,24 +1,23 @@
-import { IVerifyOptions } from 'passport-local'
 import bcrypt from 'bcrypt'
-import createError from 'http-errors'
-import User from '../Models/UserModel'
-import passport from 'passport'
-import { signJwt } from '../utils/JwtUtils'
-import RefreshTokenService from './RefreshTokenServices'
 import { NextFunction, Request, Response } from 'express'
+import createError from 'http-errors'
+import jwt from 'jsonwebtoken'
+import passport from 'passport'
+import { IVerifyOptions } from 'passport-local'
+import RefreshToken from '../Models/RefreshTokenModel'
+import User from '../Models/UserModel'
 import {
   accessTokenCookieName,
   refreshTokenCookieName,
 } from '../data/JwtCookieNames'
-import { HttpError } from 'http-errors'
-import RefreshToken from '../Models/RefreshTokenModel'
 import { publicKey } from '../data/RSAKeys'
 import {
   getCookie,
   removeJwtCookies,
   sendJwtCookie,
 } from '../utils/CookiesUtils'
-import jwt from 'jsonwebtoken'
+import { signJwt } from '../utils/JwtUtils'
+import RefreshTokenService from './RefreshTokenServices'
 
 const refreshTokenService = new RefreshTokenService()
 
@@ -29,7 +28,7 @@ export default class UserService {
 
       return validPassword
     } catch (error: any) {
-      return createError(500, error)
+      throw createError(500, error)
     }
   }
 
@@ -51,14 +50,14 @@ export default class UserService {
       errors.push('Digite um email válido')
 
     if (errors.length > 0) {
-      return createError(400, errors.join(' | '))
+      throw createError(400, errors.join(' | '))
     } else {
       try {
         const hashedPassword = await bcrypt.hash(password, 10)
 
         const alreadyUser = await User.findOne({ where: { email: email } })
 
-        if (alreadyUser) return createError(400, 'Email já utilizado')
+        if (alreadyUser) throw createError(400, 'Email já utilizado')
 
         await User.create({
           name,
@@ -69,7 +68,7 @@ export default class UserService {
 
         return { message: 'Usuário Criado com Sucesso', success: true }
       } catch (error: any) {
-        return createError(500, error)
+        throw createError(500, error)
       }
     }
   }
@@ -98,36 +97,34 @@ export default class UserService {
 
           sendJwtCookie(res, accessTokenCookieName, newAccessToken, 'Access')
           sendJwtCookie(res, refreshTokenCookieName, newRefreshToken, 'Refresh')
-          res.json({
+          return res.json({
             message: 'Login realizado com sucesso',
             token: newAccessToken,
           })
-          return next()
         }
       )(req, res, next)
     } catch (error: any) {
-      return next(createError(500, error))
+      throw createError(500, error)
     }
   }
 
-  public async Logout(req: Request, res: Response, next: NextFunction) {
+  public async Logout(req: Request, res: Response) {
     try {
       const user = req.user
 
       if (!user)
-        return next(
-          createError(400, 'Você não está cadastrado para sair de sua conta')
+        throw createError(
+          400,
+          'Você não está cadastrado para sair de sua conta'
         )
 
-      const response = await refreshTokenService.removeByUserId(user.id)
-
-      if (response instanceof HttpError) return next(response)
+      await refreshTokenService.removeByUserId(user.id)
 
       removeJwtCookies(res)
 
       return res.json({ messsage: 'Você saiu da sua conta com sucesso' })
     } catch (error: any) {
-      return next(createError(500, error))
+      throw createError(500, error)
     }
   }
 
@@ -137,7 +134,7 @@ export default class UserService {
 
       return foundUser
     } catch (error: any) {
-      return createError(500, error)
+      throw createError(500, error)
     }
   }
 

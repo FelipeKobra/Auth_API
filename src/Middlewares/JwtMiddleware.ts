@@ -28,8 +28,6 @@ export const JwtMiddleware: MiddlewareType = async (req, res, next) => {
               await refreshTokenService.updateAccessTokenWithRefreshToken(req)
 
             if (NewTokens instanceof HttpError) return next(NewTokens)
-            if (NewTokens.oldRefreshTokenObject instanceof HttpError)
-              return next(NewTokens.oldRefreshTokenObject)
 
             sendJwtCookie(
               res,
@@ -60,10 +58,14 @@ export const JwtMiddleware: MiddlewareType = async (req, res, next) => {
               return res.redirect(`/confirmEmail/${user.id}`)
             }
 
-            console.log({ message: 'Refresh Token autenticado com sucesso' })
             return next()
           } else {
-            return next(createError(401, 'Erro na validação do token'))
+            return next(
+              createError(
+                401,
+                'Erro na validação do token, verifique se está em sua conta para acessar a rota'
+              )
+            )
           }
         }
 
@@ -76,11 +78,10 @@ export const JwtMiddleware: MiddlewareType = async (req, res, next) => {
           return res.redirect(`/confirmEmail/${user.id}`)
         }
 
-        console.log({ message: 'Token autenticado com sucesso' })
         return next()
       }
     )(req, res, next)
   } catch (error: any) {
-    return next(createError(500, error))
+    throw createError(500, error)
   }
 }

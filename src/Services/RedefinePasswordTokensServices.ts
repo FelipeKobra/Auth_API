@@ -15,7 +15,7 @@ export default class RedefinePasswordTokensServices {
 
       return token
     } catch (error: any) {
-      return createError(500, error)
+      throw createError(500, error)
     }
   }
 
@@ -27,7 +27,7 @@ export default class RedefinePasswordTokensServices {
 
       return tokenObject
     } catch (error: any) {
-      return createError(500, error)
+      throw createError(500, error)
     }
   }
 
@@ -48,7 +48,7 @@ export default class RedefinePasswordTokensServices {
         user_id: userId,
       })
     } catch (error: any) {
-      return createError(500, error)
+      throw createError(500, error)
     }
   }
 
@@ -67,12 +67,12 @@ export default class RedefinePasswordTokensServices {
       })
 
       if (typeof emailVizualizer !== 'string') {
-        return createError(500, 'Erro durante envio do email')
+        throw createError(500, 'Erro durante envio do email')
       }
 
       return emailVizualizer
     } catch (error) {
-      return createError(500, 'Erro durante o envio do Token')
+      throw createError(500, 'Erro durante o envio do Token')
     }
   }
 
@@ -97,7 +97,7 @@ export default class RedefinePasswordTokensServices {
 
       return newToken[1][0]
     } catch (error) {
-      return createError(500, 'Erro durante a criação do token')
+      throw createError(500, 'Erro durante a criação do token')
     }
   }
 

@@ -9,8 +9,10 @@ const userController = new UserController()
 router.post('/register', userController.registerUser)
 router.post('/login', userController.loginUser)
 
+router.use(JwtMiddleware)
+
 // Rotas Protegidas
-router.get('/logout', JwtMiddleware, userController.logoutUser)
+router.get('/logout', userController.logoutUser)
 
 export { router as UserRouter }
 

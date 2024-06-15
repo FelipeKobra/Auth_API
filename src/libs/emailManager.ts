@@ -19,7 +19,7 @@ export default class emailManager {
 
       return transporter
     } catch (error) {
-      return createError(
+      throw createError(
         500,
         'Erro durante a criação do Email Transporter: ' + error
       )
@@ -58,7 +58,7 @@ export default class emailManager {
 
       return nodemailer.getTestMessageUrl(info)
     } catch (error: any) {
-      return createError(500, 'Erro durante o envio do email: ' + error)
+      throw createError(500, 'Erro durante o envio do email: ' + error)
     }
   }
 }

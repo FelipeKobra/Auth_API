@@ -14,12 +14,10 @@ export default class EmailConfirmTokenController {
       const user = await User.findOne({ where: { id: req.params.userid } })
 
       if (!user)
-        return next(
-          createError(401, 'Confirmação apenas para usuários cadastrados')
-        )
+        throw createError(401, 'Confirmação apenas para usuários cadastrados')
 
       if (user.confirmed === true) {
-        return next(createError(400, 'Seu email já foi autenticado'))
+        throw createError(400, 'Seu email já foi autenticado')
       }
 
       let foundToken = await emailConfirmToken.searchTokenByUserId(user.id)
@@ -42,24 +40,20 @@ export default class EmailConfirmTokenController {
         foundToken.tokenObject.token
       )
 
-      if (typeof emailVizualizer === 'string') {
-        await EmailConfirmToken.update(
-          { emailVizualizer },
-          { where: { user_id: user.id } }
-        )
+      await EmailConfirmToken.update(
+        { emailVizualizer },
+        { where: { user_id: user.id } }
+      )
 
-        return res.json({
-          message: `Confirme seu email para continuar. Um token foi enviado para seu email, ou pode ser vizualizado nessa URL em caso de teste: ${emailVizualizer}`,
-        })
-      } else {
-        return next(emailVizualizer)
-      }
+      return res.json({
+        message: `Confirme seu email para continuar. Um token foi enviado para seu email, ou pode ser vizualizado nessa URL em caso de teste: ${emailVizualizer}`,
+      })
     } catch (error: any) {
-      return next(createError(500, error))
+      throw createError(500, error)
     }
   }
 
-  public async confirmToken(req: Request, res: Response, next: NextFunction) {
+  public async confirmToken(req: Request, res: Response) {
     try {
       const token = req.params.token
 
@@ -85,7 +79,7 @@ export default class EmailConfirmTokenController {
 
       return res.json({ message: 'Usuário autenticado com sucesso!' })
     } catch (error: any) {
-      return next(createError(500, error))
+      throw createError(500, error)
     }
   }
 }

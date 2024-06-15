@@ -15,7 +15,7 @@ export const LocalStrategyProvider: LocalProviderType = async (
 
     if (!foundUser)
       return done(null, false, {
-        message: 'E-mail incorreto, Lembre-se de adicionar o campo `email`',
+        message: 'Email incorreto',
       })
 
     if (!foundUser.password) return done(null, false)

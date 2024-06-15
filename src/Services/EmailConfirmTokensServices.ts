@@ -23,12 +23,12 @@ export default class EmailConfirmTokenService {
       })
 
       if (typeof emailVizualizer !== 'string') {
-        return createError(500, 'Falha durante o envio do email')
+        throw createError(500, 'Falha durante o envio do email')
       }
 
       return emailVizualizer
     } catch (error) {
-      return createError(500, 'Erro durante o envio do Token')
+      throw createError(500, 'Erro durante o envio do Token')
     }
   }
 
@@ -47,7 +47,7 @@ export default class EmailConfirmTokenService {
 
       return { tokenObject: newToken, expired: false }
     } catch (error) {
-      return createError(500, 'Erro durante a criação do token')
+      throw createError(500, 'Erro durante a criação do token')
     }
   }
 
@@ -68,7 +68,7 @@ export default class EmailConfirmTokenService {
 
       return { tokenObject: newToken[1][0], expired: false }
     } catch (error) {
-      return createError(500, 'Erro durante a criação do token')
+      throw createError(500, 'Erro durante a criação do token')
     }
   }
 
@@ -89,7 +89,7 @@ export default class EmailConfirmTokenService {
         return { tokenObject: foundToken, expired: false }
       }
     } catch (error) {
-      return createError(500, 'Erro durante validação do Token')
+      throw createError(500, 'Erro durante validação do Token')
     }
   }
 
@@ -99,7 +99,7 @@ export default class EmailConfirmTokenService {
       if (!tokenObject) return null
       return tokenObject
     } catch (error: any) {
-      return createError(500, error)
+      throw createError(500, error)
     }
   }
 }

@@ -1,16 +1,16 @@
-import createError from 'http-errors'
 import { NextFunction, Request, Response } from 'express'
+import createError from 'http-errors'
 import passport from 'passport'
-import User from '../Models/UserModel'
 import { IVerifyOptions } from 'passport-local'
-import { signJwt } from '../utils/JwtUtils'
 import RefreshToken from '../Models/RefreshTokenModel'
+import User from '../Models/UserModel'
+import RefreshTokenService from '../Services/RefreshTokenServices'
 import {
   accessTokenCookieName,
   refreshTokenCookieName,
 } from '../data/JwtCookieNames'
 import { sendJwtCookie } from '../utils/CookiesUtils'
-import RefreshTokenService from '../Services/RefreshTokenServices'
+import { signJwt } from '../utils/JwtUtils'
 
 const refreshTokenService = new RefreshTokenService()
 
@@ -50,7 +50,7 @@ export default class AuthController {
         }
       )(req, res, next)
     } catch (error: any) {
-      next(createError(500, error))
+      throw createError(500, error)
     }
   }
 }

@@ -27,7 +27,7 @@ export default class AccountServices {
         type,
       })
     } catch (error: any) {
-      return createError(500, error)
+      throw createError(500, error)
     }
   }
 }

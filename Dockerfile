@@ -1,20 +1,18 @@
 # Use a imagem oficial do Node.js
-FROM node:14-alpine
+FROM node:current-alpine
 
 # Defina o diretório de trabalho dentro do contêiner
-WORKDIR /
+WORKDIR /app/src
 
 # Copie o arquivo package.json e o package-lock.json para o diretório de trabalho
 COPY package*.json ./
 
 # Instale as dependências
-RUN npm install
+RUN npm ci --production
 
 # Copie os arquivos do código-fonte para o diretório de trabalho
-COPY . .
-
-# Execute o script de construção
-RUN npm run build
+COPY dist/ dist
+COPY certs/ certs
 
 # Exponha a porta do aplicativo (ajuste conforme necessário)
 EXPOSE 3000

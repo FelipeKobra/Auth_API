@@ -15,17 +15,30 @@ export default class Account extends Model<
   InferCreationAttributes<Account>
 > {
   @ForeignKey(() => User)
-  @Column({ unique: true, type: DataType.INTEGER })
+  @Column({
+    type: DataType.INTEGER,
+    unique: true,
+    allowNull: false,
+    validate: { notNull: true, notEmpty: true },
+  })
   declare user_id: number
 
   @Default('oauth')
   @Column(DataType.TEXT)
   declare type?: string
 
-  @Column(DataType.TEXT)
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+    validate: { notNull: true, notEmpty: true },
+  })
   declare provider: string
 
-  @Column(DataType.TEXT)
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+    validate: { notNull: true, notEmpty: true },
+  })
   declare providerAccountId: string
 
   @Default(null)

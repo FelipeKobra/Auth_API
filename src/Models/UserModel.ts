@@ -17,7 +17,7 @@ export default class User extends Model<
 
   @Default(null)
   @Column(DataType.TEXT)
-  declare provider: string
+  declare provider?: string
 
   @Default(false)
   @Column(DataType.BOOLEAN)

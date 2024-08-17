@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript'
 import Account from '../../src/Models/AccountModel'
-import { closeSequelize, setupSequelize } from '../setup/sequelizeSetup'
+import { setupSequelize } from '../setup/sequelizeSetup'
 
 describe('Account Model', () => {
   let sequelize: Sequelize
@@ -8,18 +8,14 @@ describe('Account Model', () => {
 
   beforeEach(async () => {
     sequelize = await setupSequelize()
-  })
-
-  afterEach(async () => {
-    await closeSequelize(sequelize)
-  })
-
-  it('Criar nova conta', async () => {
     account = await Account.create({
       user_id: 1,
       provider: 'google',
       providerAccountId: '1234567890',
     })
+  })
+
+  it('Criar nova conta', async () => {
     expect(account).toHaveProperty('id')
     expect(account.user_id).toBe(1)
     expect(account.provider).toBe('google')
@@ -27,11 +23,6 @@ describe('Account Model', () => {
   })
 
   it('Atualizar uma conta existente', async () => {
-    account = await Account.create({
-      user_id: 1,
-      provider: 'google',
-      providerAccountId: '1234567890',
-    })
     await account.update({
       refreshToken: 'new-refresh-token',
     })
@@ -39,11 +30,6 @@ describe('Account Model', () => {
   })
 
   it('Deletar uma conta existente', async () => {
-    account = await Account.create({
-      user_id: 1,
-      provider: 'google',
-      providerAccountId: '1234567890',
-    })
     await account.destroy()
     expect(await Account.count()).toBe(0)
   })
@@ -59,12 +45,6 @@ describe('Account Model', () => {
   })
 
   it('Atualizar conta com dados inválidos', async () => {
-    account = await Account.create({
-      user_id: 1,
-      provider: 'google',
-      providerAccountId: '1234567890',
-    })
-
     // Tentar atualizar com provider inválido
     await expect(account.update({ provider: '' })).rejects.toThrow()
 
@@ -82,11 +62,6 @@ describe('Account Model', () => {
   })
 
   it('Buscar conta existente', async () => {
-    account = await Account.create({
-      user_id: 1,
-      provider: 'google',
-      providerAccountId: '1234567890',
-    })
     const foundAccount = await Account.findByPk(account.id)
     expect(foundAccount).not.toBeNull()
     // @ts-ignore

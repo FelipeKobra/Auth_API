@@ -1,25 +1,22 @@
 import { Sequelize } from 'sequelize-typescript'
 import EmailConfirmToken from '../../src/Models/EmailConfirmTokenModel'
-import { closeSequelize, setupSequelize } from '../setup/sequelizeSetup'
+import { setupSequelize } from '../setup/sequelizeSetup'
 
 describe('EmailConfirmToken Model', () => {
   let sequelize: Sequelize
   const user_id = 123
+  let emailConfirmToken: EmailConfirmToken
 
   beforeEach(async () => {
     sequelize = await setupSequelize()
-  })
-
-  afterEach(async () => {
-    await closeSequelize(sequelize)
-  })
-
-  it('Deve criar um Email Confirm Token corretamente', async () => {
-    const emailConfirmToken = await EmailConfirmToken.create({
+    emailConfirmToken = await EmailConfirmToken.create({
       user_id: user_id,
       token: 'some-token',
       expire_date: new Date(),
     })
+  })
+
+  it('Deve criar um Email Confirm Token corretamente', async () => {
     expect(emailConfirmToken).toBeInstanceOf(EmailConfirmToken)
     expect(emailConfirmToken.user_id).toBe(user_id)
     expect(emailConfirmToken.token).toBe('some-token')
@@ -66,11 +63,6 @@ describe('EmailConfirmToken Model', () => {
   })
 
   it('Deve ser null por padrão', async () => {
-    const emailConfirmToken = await EmailConfirmToken.create({
-      user_id: 1,
-      token: 'some-token',
-      expire_date: new Date(),
-    })
     expect(emailConfirmToken.emailVizualizer).toBeNull()
   })
 
@@ -114,11 +106,6 @@ describe('EmailConfirmToken Model', () => {
   })
 
   it('Deve ser possível atualizar um EmailConfirmToken', async () => {
-    const emailConfirmToken = await EmailConfirmToken.create({
-      user_id: 1,
-      token: 'some-token',
-      expire_date: new Date(),
-    })
     await emailConfirmToken.update({
       token: 'new-token',
     })
@@ -126,11 +113,6 @@ describe('EmailConfirmToken Model', () => {
   })
 
   it('Deve ser possível deletar um EmailConfirmToken', async () => {
-    const emailConfirmToken = await EmailConfirmToken.create({
-      user_id: 1,
-      token: 'some-token',
-      expire_date: new Date(),
-    })
     await emailConfirmToken.destroy()
     expect(await EmailConfirmToken.findByPk(emailConfirmToken.id)).toBeNull()
   })

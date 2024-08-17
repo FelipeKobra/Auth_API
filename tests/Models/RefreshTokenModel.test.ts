@@ -3,19 +3,20 @@ import { setupSequelize } from '../setup/sequelizeSetup'
 import RefreshToken from '../../src/Models/RefreshTokenModel'
 import User from '../../src/Models/UserModel'
 
-let sequelize: Sequelize
 describe('RefreshToken model', () => {
+  let sequelize: Sequelize
+  let user: User
+
   beforeEach(async () => {
     sequelize = await setupSequelize()
-  })
-
-  it('Deve criar um novo token de refresh', async () => {
-    const user = await User.create({
+    user = await User.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: 'password123',
     })
+  })
 
+  it('Deve criar um novo token de refresh', async () => {
     const refreshToken = await RefreshToken.create({
       user_id: user.id,
       token: 'token-de-refresh',
@@ -28,12 +29,6 @@ describe('RefreshToken model', () => {
   })
 
   it('Não deve criar um token de refresh com mesmo usuário', async () => {
-    const user = await User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: 'password123',
-    })
-
     await RefreshToken.create({
       user_id: user.id,
       token: 'token-de-refresh',
@@ -53,12 +48,6 @@ describe('RefreshToken model', () => {
   })
 
   it('Deve bloquear um token de refresh', async () => {
-    const user = await User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: 'password123',
-    })
-
     const refreshToken = await RefreshToken.create({
       user_id: user.id,
       token: 'token-de-refresh',
@@ -71,12 +60,6 @@ describe('RefreshToken model', () => {
   })
 
   it('Deve buscar token de refresh por usuário', async () => {
-    const user = await User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: 'password123',
-    })
-
     const refreshToken = await RefreshToken.create({
       user_id: user.id,
       token: 'token-de-refresh',

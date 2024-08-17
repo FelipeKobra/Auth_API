@@ -12,8 +12,6 @@ import {
 import { sendJwtCookie } from '../utils/CookiesUtils'
 import { signJwt } from '../utils/JwtUtils'
 
-const refreshTokenService = new RefreshTokenService()
-
 export default class AuthController {
   public async googleCallback(req: Request, res: Response, next: NextFunction) {
     try {
@@ -35,9 +33,9 @@ export default class AuthController {
           })
 
           if (alreadyRefreshToken) {
-            await refreshTokenService.update(newRefreshToken, user.id)
+            await RefreshTokenService.update(newRefreshToken, user.id)
           } else {
-            await refreshTokenService.create(newRefreshToken, user.id)
+            await RefreshTokenService.create(newRefreshToken, user.id)
           }
 
           sendJwtCookie(res, accessTokenCookieName, newAccessToken, 'Access')

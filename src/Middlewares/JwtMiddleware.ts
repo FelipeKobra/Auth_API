@@ -9,7 +9,6 @@ import {
 } from '../data/JwtCookieNames'
 import { MiddlewareType } from '../types/RoutesTypes'
 import { sendJwtCookie } from '../utils/CookiesUtils'
-const refreshTokenService = new RefreshTokenService()
 
 export const JwtMiddleware: MiddlewareType = async (req, res, next) => {
   try {
@@ -25,7 +24,7 @@ export const JwtMiddleware: MiddlewareType = async (req, res, next) => {
             info.message === 'jwt expired'
           ) {
             const NewTokens =
-              await refreshTokenService.updateAccessTokenWithRefreshToken(req)
+              await RefreshTokenService.updateAccessTokenWithRefreshToken(req)
 
             if (NewTokens instanceof HttpError) return next(NewTokens)
 

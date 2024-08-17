@@ -3,7 +3,7 @@ import Account from '../Models/AccountModel'
 import { CreateAccountParams } from '../types/AccountTypes'
 
 export default class AccountServices {
-  public async createAccount({
+  public static async createAccount({
     provider,
     providerAccountId,
     user_id,

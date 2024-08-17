@@ -1,15 +1,12 @@
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response } from 'express'
 import createError from 'http-errors'
 import EmailConfirmToken from '../Models/EmailConfirmTokenModel'
 import User from '../Models/UserModel'
 import EmailConfirmTokenService from '../Services/EmailConfirmTokensServices'
 import UserService from '../Services/UserServices'
 
-const userServices = new UserService()
-const emailConfirmToken = new EmailConfirmTokenService()
-
 export default class EmailConfirmTokenController {
-  public async sendEmailToken(req: Request, res: Response, next: NextFunction) {
+  public async sendEmailToken(req: Request, res: Response) {
     try {
       const user = await User.findOne({ where: { id: req.params.userid } })
 
@@ -20,21 +17,23 @@ export default class EmailConfirmTokenController {
         throw createError(400, 'Seu email já foi autenticado')
       }
 
-      let foundToken = await emailConfirmToken.searchTokenByUserId(user.id)
+      let foundToken = await EmailConfirmTokenService.searchTokenByUserId(
+        user.id
+      )
 
       if (foundToken && !foundToken.expired && foundToken.tokenObject) {
         return res.json({
           message: `O token enviado previamente ainda é válido, verifique sua caixa de mensagem ou entre nessa URL: ${(foundToken.tokenObject as EmailConfirmToken).emailVizualizer}`,
         })
       } else if (foundToken && foundToken.expired && foundToken.tokenObject) {
-        foundToken = await emailConfirmToken.updateToken(user.id)
+        foundToken = await EmailConfirmTokenService.updateToken(user.id)
       }
 
       if (!foundToken) {
-        foundToken = await emailConfirmToken.createToken(user.id)
+        foundToken = await EmailConfirmTokenService.createToken(user.id)
       }
 
-      const emailVizualizer = await emailConfirmToken.sendToken(
+      const emailVizualizer = await EmailConfirmTokenService.sendToken(
         user.email,
         user.name,
         foundToken.tokenObject.token
@@ -57,11 +56,12 @@ export default class EmailConfirmTokenController {
     try {
       const token = req.params.token
 
-      const foundToken = await emailConfirmToken.searchTokenByToken(token)
+      const foundToken =
+        await EmailConfirmTokenService.searchTokenByToken(token)
 
       if (!foundToken) throw createError(400, 'Token Inválido')
 
-      const user = await userServices.findUserById(foundToken.user_id)
+      const user = await UserService.findUserById(foundToken.user_id)
 
       if (!user) throw createError(400, 'Token Inválido')
 

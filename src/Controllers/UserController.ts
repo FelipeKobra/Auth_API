@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from 'express'
 import createError from 'http-errors'
 import UserService from '../Services/UserServices'
 
-const userService = new UserService()
-
 export default class UserController {
   public async registerUser(req: Request, res: Response, next: NextFunction) {
     try {
@@ -26,7 +24,7 @@ export default class UserController {
         )
       }
 
-      const response = await userService.Register(name, email, password)
+      const response = await UserService.Register(name, email, password)
 
       if (response.success === true) {
         return res.json({ message: response.message })
@@ -54,7 +52,7 @@ export default class UserController {
         )
       }
 
-      await userService.Login(req, res, next)
+      await UserService.Login(req, res, next)
     } catch (error: any) {
       throw createError(500, error)
     }
@@ -62,7 +60,7 @@ export default class UserController {
 
   public async logoutUser(req: Request, res: Response) {
     try {
-      await userService.Logout(req, res)
+      return await UserService.Logout(req, res)
     } catch (error: any) {
       throw createError(500, error)
     }

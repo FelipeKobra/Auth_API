@@ -3,8 +3,6 @@ import User from '../../Models/UserModel'
 import UserService from '../../Services/UserServices'
 import { LocalProviderType } from '../../types/PassportTypes'
 
-const userService = new UserService()
-
 export const LocalStrategyProvider: LocalProviderType = async (
   email,
   password,
@@ -20,7 +18,7 @@ export const LocalStrategyProvider: LocalProviderType = async (
 
     if (!foundUser.password) return done(null, false)
 
-    const validPassword = await userService.ValidatePassword(
+    const validPassword = await UserService.ValidatePassword(
       foundUser.password,
       password
     )

@@ -4,8 +4,6 @@ import { GoogleProviderType } from '../../types/PassportTypes'
 import createError from 'http-errors'
 import AccountServices from '../../Services/AccountServices'
 
-const accountServices = new AccountServices()
-
 const GoogleStrategyProvider: GoogleProviderType = async (
   accessToken,
   refreshToken,
@@ -51,7 +49,7 @@ const GoogleStrategyProvider: GoogleProviderType = async (
       googleExpireTokenDate.getTime() / 1000
     )
 
-    await accountServices.createAccount({
+    await AccountServices.createAccount({
       provider: 'google',
       providerAccountId: googleId,
       user_id: user.id,

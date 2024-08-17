@@ -7,7 +7,7 @@ import emailManager from '../libs/emailManager'
 const emailManagerInstance = new emailManager()
 
 export default class RedefinePasswordTokensServices {
-  public async findTokenyByUserId(userId: number) {
+  public static async findTokenyByUserId(userId: number) {
     try {
       const token = await RedefinePasswordTokens.findOne({
         where: { user_id: userId },
@@ -19,7 +19,7 @@ export default class RedefinePasswordTokensServices {
     }
   }
 
-  public async findTokenByToken(token: string) {
+  public static async findTokenByToken(token: string) {
     try {
       const tokenObject = await RedefinePasswordTokens.findOne({
         where: { token },
@@ -31,7 +31,7 @@ export default class RedefinePasswordTokensServices {
     }
   }
 
-  public async createToken(userId: number) {
+  public static async createToken(userId: number) {
     try {
       const today = new Date()
       const expireDate = new Date(today.setMinutes(today.getMinutes() + 10))
@@ -52,7 +52,7 @@ export default class RedefinePasswordTokensServices {
     }
   }
 
-  public async sendToken(
+  public static async sendToken(
     receiverEmail: string,
     receiverName: string,
     tokenURL: URL
@@ -76,7 +76,7 @@ export default class RedefinePasswordTokensServices {
     }
   }
 
-  public async updateToken(userid: number) {
+  public static async updateToken(userid: number) {
     try {
       const today = new Date()
       const expireDate = new Date(today.setMinutes(today.getMinutes() + 10))
@@ -101,7 +101,7 @@ export default class RedefinePasswordTokensServices {
     }
   }
 
-  public createTokenURL(token: string) {
+  public static createTokenURL(token: string) {
     const tokenURL = new URL(baseUrl + `/redefinePassword/token/` + token)
     return tokenURL
   }

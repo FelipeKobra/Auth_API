@@ -1,6 +1,13 @@
 import createError from 'http-errors'
-import nodemailer from 'nodemailer'
 import { sendEmailType } from '../types/NodeMailTypes'
+import type Nodemailer from 'nodemailer'
+let nodemailer: typeof Nodemailer
+
+if ((process.env.NODE_ENV as string) === 'test') {
+  nodemailer = require('../../tests/mocks/nodemailer')
+} else {
+  nodemailer = require('nodemailer')
+}
 
 export default class emailManager {
   public async createTransporter() {

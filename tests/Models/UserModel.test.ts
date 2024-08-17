@@ -1,32 +1,27 @@
-import { Sequelize } from 'sequelize'
 import { setupSequelize } from '../setup/sequelizeSetup'
 import User from '../../src/Models/UserModel'
+import { Sequelize } from 'sequelize-typescript'
 
-let sequelize: Sequelize
 describe('User model', () => {
+  let sequelize: Sequelize
+  let user: User
+
   beforeEach(async () => {
     sequelize = await setupSequelize()
-  })
-
-  it('Criar novo usuário', async () => {
-    const user = await User.create({
+    user = await User.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: 'password123',
     })
+  })
 
+  it('Criar novo usuário', async () => {
     expect(user.name).toBe('John Doe')
     expect(user.email).toBe('johndoe@example.com')
     expect(user.password).not.toBe(null)
   })
 
   it('Não deverá criar um usuário com mesmo email', async () => {
-    await User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: 'password123',
-    })
-
     try {
       await User.create({
         name: 'Jane Doe',
@@ -40,12 +35,6 @@ describe('User model', () => {
   })
 
   it('Deve atualizar o usuário', async () => {
-    const user = await User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: 'password123',
-    })
-
     await user.update({
       name: 'Jane Doe',
       email: 'janedoe@example.com',
@@ -56,12 +45,6 @@ describe('User model', () => {
   })
 
   it('Deve deletar o usuário', async () => {
-    const user = await User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: 'password123',
-    })
-
     await user.destroy()
 
     const deletedUser = await User.findByPk(user.id)
@@ -77,7 +60,7 @@ describe('User model', () => {
       })
       fail('Deveria ter retornado erro')
     } catch (error: any) {
-      expect(error.name).toBe('ReferenceError')
+      expect(error.name).toBe('SequelizeUniqueConstraintError')
     }
   })
 
@@ -97,8 +80,8 @@ describe('User model', () => {
   it('Deve retornar erro ao criar usuário sem senha', async () => {
     try {
       await User.create({
-        name: 'John Doe',
-        email: 'johndoe@example.com',
+        name: 'Joh Doe',
+        email: 'johnde@example.com',
       })
       fail('Deveria ter retornado erro')
     } catch (error: any) {
@@ -107,12 +90,6 @@ describe('User model', () => {
   })
 
   it('Deve buscar usuário por ID', async () => {
-    const user = await User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: 'password123',
-    })
-
     const foundUser = await User.findByPk(user.id)
     expect(foundUser).not.toBeNull()
     // @ts-ignore
@@ -122,12 +99,6 @@ describe('User model', () => {
   })
 
   it('Deve buscar usuário por email', async () => {
-    const user = await User.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: 'password123',
-    })
-
     const foundUser = await User.findOne({
       where: { email: 'johndoe@example.com' },
     })

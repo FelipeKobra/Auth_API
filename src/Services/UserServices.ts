@@ -19,10 +19,8 @@ import {
 import { signJwt } from '../utils/JwtUtils'
 import RefreshTokenService from './RefreshTokenServices'
 
-const refreshTokenService = new RefreshTokenService()
-
 export default class UserService {
-  public async ValidatePassword(userPassword: string, password: string) {
+  public static async ValidatePassword(userPassword: string, password: string) {
     try {
       const validPassword = await bcrypt.compare(password, userPassword)
 
@@ -32,12 +30,12 @@ export default class UserService {
     }
   }
 
-  public validateEmail(email: string) {
+  public static validateEmail(email: string) {
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     return emailRegex.test(email)
   }
 
-  public async Register(name: string, email: string, password: string) {
+  public static async Register(name: string, email: string, password: string) {
     let errors = []
 
     if (!name || name.length < 1) errors.push('Digite um nome válido')
@@ -73,7 +71,7 @@ export default class UserService {
     }
   }
 
-  public async Login(req: Request, res: Response, next: NextFunction) {
+  public static async Login(req: Request, res: Response, next: NextFunction) {
     try {
       passport.authenticate(
         'local',
@@ -90,9 +88,9 @@ export default class UserService {
           })
 
           if (alreadyRefreshToken) {
-            await refreshTokenService.update(newRefreshToken, user.id)
+            await RefreshTokenService.update(newRefreshToken, user.id)
           } else {
-            await refreshTokenService.create(newRefreshToken, user.id)
+            await RefreshTokenService.create(newRefreshToken, user.id)
           }
 
           sendJwtCookie(res, accessTokenCookieName, newAccessToken, 'Access')
@@ -108,7 +106,7 @@ export default class UserService {
     }
   }
 
-  public async Logout(req: Request, res: Response) {
+  public static async Logout(req: Request, res: Response) {
     try {
       const user = req.user
 
@@ -118,17 +116,17 @@ export default class UserService {
           'Você não está cadastrado para sair de sua conta'
         )
 
-      await refreshTokenService.removeByUserId(user.id)
+      await RefreshTokenService.removeByUserId(user.id)
 
       removeJwtCookies(res)
 
-      return res.json({ messsage: 'Você saiu da sua conta com sucesso' })
+      return res.json({ message: 'Você saiu da sua conta com sucesso' })
     } catch (error: any) {
       throw createError(500, error)
     }
   }
 
-  public async findUserById(userId: number) {
+  public static async findUserById(userId: number) {
     try {
       const foundUser = await User.findOne({ where: { id: userId } })
 
@@ -138,7 +136,7 @@ export default class UserService {
     }
   }
 
-  public async returnUserByCookieToken(req: Request) {
+  public static async returnUserByCookieToken(req: Request) {
     try {
       let user: null | User = null
       const accessToken = getCookie(req, accessTokenCookieName)

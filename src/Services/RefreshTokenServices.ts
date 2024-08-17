@@ -6,7 +6,7 @@ import { getCookie } from '../utils/CookiesUtils'
 import { signJwt, validateJwt } from '../utils/JwtUtils'
 
 export default class RefreshTokenService {
-  public async validateRefreshToken(token: string) {
+  public static async validateRefreshToken(token: string) {
     try {
       const validToken = validateJwt(token)
       if (!validToken) return null
@@ -23,7 +23,7 @@ export default class RefreshTokenService {
     }
   }
 
-  public async update(token: string, userid: number) {
+  public static async update(token: string, userid: number) {
     try {
       let hoje = new Date()
       hoje.setMonth(hoje.getMonth() + 1)
@@ -37,7 +37,7 @@ export default class RefreshTokenService {
     }
   }
 
-  public async create(token: string, userid: number) {
+  public static async create(token: string, userid: number) {
     try {
       let hoje = new Date()
       hoje.setMonth(hoje.getMonth() + 1)
@@ -48,7 +48,7 @@ export default class RefreshTokenService {
     }
   }
 
-  public async updateAccessTokenWithRefreshToken(req: Request) {
+  public static async updateAccessTokenWithRefreshToken(req: Request) {
     const refreshToken = getCookie(req, refreshTokenCookieName)
 
     if (!refreshToken) return createError(401, 'Não há Refresh Token')
@@ -68,7 +68,7 @@ export default class RefreshTokenService {
     }
   }
 
-  public async removeByUserId(userId: number) {
+  public static async removeByUserId(userId: number) {
     try {
       await RefreshToken.destroy({ where: { user_id: userId } })
     } catch (error: any) {

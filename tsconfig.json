@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "ES2022",
+    "outDir": "./dist",
+    "rootDir": "./",
+    "lib": ["ES6"],
+    "strict": true,
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": ["./**/*.ts", "tests/Controllers/UserController.test.ts.backup"],
+  "exclude": ["node_modules"]
+}

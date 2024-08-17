@@ -7,7 +7,7 @@ import RefreshToken from '../../src/Models/RefreshTokenModel'
 import User from '../../src/Models/UserModel'
 
 export const setupSequelize = async () => {
-  const sequelize = new Sequelize({
+  const sequelize: Sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: ':memory:',
     models: [
@@ -21,8 +21,4 @@ export const setupSequelize = async () => {
   })
   await sequelize.sync({ force: true })
   return sequelize
-}
-
-export const closeSequelize = async (sequelize: Sequelize) => {
-  await sequelize.close()
 }

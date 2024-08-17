@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response } from 'express'
 import createError from 'http-errors'
 import RedefinePasswordTokens from '../Models/RedefinePasswordTokensModel'
 import User from '../Models/UserModel'
@@ -8,32 +8,29 @@ import UserService from '../Services/UserServices'
 import { baseUrl } from '../data/URL'
 import { checkIfPreviousDate } from '../utils/VerifyUtils'
 
-const userService = new UserService()
-const redefinePasswordTokensServices = new RedefinePasswordTokensServices()
-
 export default class RedefinePasswordTokensController {
-  public async sendToken(req: Request, res: Response, next: NextFunction) {
+  public async sendToken(req: Request, res: Response) {
     try {
       const { userid } = req.params
 
-      const user = await userService.findUserById(parseInt(userid))
+      const user = await UserService.findUserById(parseInt(userid))
 
-      if (!user) return res.json({ message: 'Número de usuário inválido' })
+      if (!user) return createError(400, 'Número de usuário inválido')
 
-      const token = await redefinePasswordTokensServices.findTokenyByUserId(
+      const token = await RedefinePasswordTokensServices.findTokenyByUserId(
         user.id
       )
 
       if (!token) {
-        const newToken = await redefinePasswordTokensServices.createToken(
+        const newToken = await RedefinePasswordTokensServices.createToken(
           user.id
         )
 
-        const tokenURL = redefinePasswordTokensServices.createTokenURL(
+        const tokenURL = RedefinePasswordTokensServices.createTokenURL(
           newToken.token
         )
 
-        const emailVizualizer = await redefinePasswordTokensServices.sendToken(
+        const emailVizualizer = await RedefinePasswordTokensServices.sendToken(
           user.email,
           user.name,
           tokenURL
@@ -47,11 +44,11 @@ export default class RedefinePasswordTokensController {
       const isExpired = checkIfPreviousDate(token.expire_date)
 
       if (!isExpired) {
-        const tokenURL = redefinePasswordTokensServices.createTokenURL(
+        const tokenURL = RedefinePasswordTokensServices.createTokenURL(
           token.token
         )
 
-        const emailVizualizer = await redefinePasswordTokensServices.sendToken(
+        const emailVizualizer = await RedefinePasswordTokensServices.sendToken(
           user.email,
           user.name,
           tokenURL
@@ -62,13 +59,13 @@ export default class RedefinePasswordTokensController {
         })
       }
 
-      const newToken = await redefinePasswordTokensServices.updateToken(user.id)
+      const newToken = await RedefinePasswordTokensServices.updateToken(user.id)
 
-      const tokenURL = redefinePasswordTokensServices.createTokenURL(
+      const tokenURL = RedefinePasswordTokensServices.createTokenURL(
         newToken.token
       )
 
-      const emailVizualizer = await redefinePasswordTokensServices.sendToken(
+      const emailVizualizer = await RedefinePasswordTokensServices.sendToken(
         user.email,
         user.name,
         tokenURL
@@ -89,9 +86,10 @@ export default class RedefinePasswordTokensController {
       const user = await User.findOne({ where: { email } })
 
       if (!user)
-        return res.json({
-          message: 'Email incorreto, lembre de adiconar o campo `email`',
-        })
+        return createError(
+          401,
+          'Email incorreto, lembre de adiconar o campo `email`'
+        )
 
       return res.redirect(baseUrl + '/redefinePassword/' + user.id)
     } catch (error: any) {
@@ -105,7 +103,7 @@ export default class RedefinePasswordTokensController {
       const { password }: { password: string | null } = req.body
 
       const tokenObject =
-        await redefinePasswordTokensServices.findTokenByToken(token)
+        await RedefinePasswordTokensServices.findTokenByToken(token)
 
       if (!tokenObject) throw createError(400, 'Token de Recuperação Inválido')
 

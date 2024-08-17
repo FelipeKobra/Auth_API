@@ -6,7 +6,7 @@ import { baseUrl } from '../data/URL'
 const emailManagerInstance = new emailManager()
 
 export default class EmailConfirmTokenService {
-  public async sendToken(
+  public static async sendToken(
     receiverEmail: string,
     receiverName: string,
     token: string
@@ -17,7 +17,7 @@ export default class EmailConfirmTokenService {
       const emailVizualizer = await emailManagerInstance.sendTokenEmail({
         receiverEmail,
         receiverName,
-        titulo:'Token de Confirmação de Email',
+        titulo: 'Token de Confirmação de Email',
         tokenURL,
         type: 'EmailConfirm',
       })
@@ -32,7 +32,7 @@ export default class EmailConfirmTokenService {
     }
   }
 
-  public async createToken(userid: number) {
+  public static async createToken(userid: number) {
     try {
       const today = new Date()
       const expireDate = new Date(today.setMinutes(today.getMinutes() + 10))
@@ -51,7 +51,7 @@ export default class EmailConfirmTokenService {
     }
   }
 
-  public async updateToken(userid: number) {
+  public static async updateToken(userid: number) {
     try {
       const today = new Date()
       const expireDate = new Date(today.setMinutes(today.getMinutes() + 10))
@@ -72,7 +72,7 @@ export default class EmailConfirmTokenService {
     }
   }
 
-  public async searchTokenByUserId(userid: number) {
+  public static async searchTokenByUserId(userid: number) {
     // Retornará false quando precisar criar um token no Controller
     try {
       const foundToken = await EmailConfirmToken.findOne({
@@ -93,7 +93,7 @@ export default class EmailConfirmTokenService {
     }
   }
 
-  public async searchTokenByToken(token: string) {
+  public static async searchTokenByToken(token: string) {
     try {
       const tokenObject = await EmailConfirmToken.findOne({ where: { token } })
       if (!tokenObject) return null

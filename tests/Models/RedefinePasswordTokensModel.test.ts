@@ -1,28 +1,25 @@
 import { Sequelize } from 'sequelize-typescript'
 import RedefinePasswordTokens from '../../src/Models/RedefinePasswordTokensModel'
-import { closeSequelize, setupSequelize } from '../setup/sequelizeSetup'
-
+import { setupSequelize } from '../setup/sequelizeSetup'
 
 describe('RedefinePasswordTokens Model', () => {
   let sequelize: Sequelize
+  let redefinePasswordToken: RedefinePasswordTokens
   const user_id = 123
   const token = 'some-token'
   const expire_date = new Date()
 
   beforeEach(async () => {
     sequelize = await setupSequelize()
-  })
 
-  afterEach(async () => {
-    await closeSequelize(sequelize)
-  })
-
-  it('Deve criar um RedefinePasswordToken corretamente', async () => {
-    const redefinePasswordToken = await RedefinePasswordTokens.create({
+    redefinePasswordToken = await RedefinePasswordTokens.create({
       user_id: user_id,
       token,
       expire_date,
     })
+  })
+
+  it('Deve criar um RedefinePasswordToken corretamente', async () => {
     expect(redefinePasswordToken).toBeInstanceOf(RedefinePasswordTokens)
     expect(redefinePasswordToken.user_id).toBe(user_id)
     expect(redefinePasswordToken.token).toBe(token)
@@ -69,11 +66,6 @@ describe('RedefinePasswordTokens Model', () => {
   })
 
   it('Deve ser possível atualizar um RedefinePasswordToken', async () => {
-    const redefinePasswordToken = await RedefinePasswordTokens.create({
-      user_id: user_id,
-      token,
-      expire_date,
-    })
     await redefinePasswordToken.update({
       token: 'new-token',
     })
@@ -81,11 +73,6 @@ describe('RedefinePasswordTokens Model', () => {
   })
 
   it('Deve ser possível deletar um RedefinePasswordToken', async () => {
-    const redefinePasswordToken = await RedefinePasswordTokens.create({
-      user_id: user_id,
-      token,
-      expire_date,
-    })
     await redefinePasswordToken.destroy()
     expect(
       await RedefinePasswordTokens.findByPk(redefinePasswordToken.id)

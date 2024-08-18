@@ -19,7 +19,7 @@ export function sendJwtCookie(
   let maxAgeValue = 1000 * 60 * 60
   if (type === 'Refresh') maxAgeValue = 1000 * 60 * 60 * 24 * 30
 
-  res.cookie(name, payload, { maxAge: maxAgeValue, httpOnly: true })
+  res.cookie(name, payload, { maxAge: maxAgeValue})
 }
 
 export function removeJwtCookies(res: Response) {

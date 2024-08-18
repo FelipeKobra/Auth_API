@@ -10,6 +10,7 @@ export function jwtFromRequest(req: Request) {
   if (req && req.cookies) {
     token = req.cookies[accessTokenCookieName]
   }
+
   if (req.headers.authorization) {
     token = req.headers.authorization.split(' ')[1]
   }
@@ -33,7 +34,7 @@ export function signJwt(userId: number, type: 'Access' | 'Refresh') {
     sub: userId.toString(),
   }
 
-  let expireTime = '50s'
+  let expireTime = '1 hour'
   if (type === 'Refresh') expireTime = '30 days'
 
   const token = jwt.sign(jwtPayload, privateKey, {

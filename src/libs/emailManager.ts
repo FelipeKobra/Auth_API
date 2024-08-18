@@ -4,7 +4,7 @@ import type Nodemailer from 'nodemailer'
 let nodemailer: typeof Nodemailer
 
 if ((process.env.NODE_ENV as string) === 'test') {
-  nodemailer = require('../../tests/mocks/nodemailer')
+  nodemailer = require('../../tests/config/mocks/nodemailer')
 } else {
   nodemailer = require('nodemailer')
 }

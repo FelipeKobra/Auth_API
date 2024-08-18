@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript'
 import Account from '../../src/Models/AccountModel'
-import { setupSequelize } from '../setup/sequelizeSetup'
+import { setupSequelize } from '../config/setup/sequelizeSetup'
 
 describe('Account Model', () => {
   let sequelize: Sequelize

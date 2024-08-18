@@ -21,13 +21,9 @@ import RefreshTokenService from './RefreshTokenServices'
 
 export default class UserService {
   public static async ValidatePassword(userPassword: string, password: string) {
-    try {
-      const validPassword = await bcrypt.compare(password, userPassword)
+    const validPassword = await bcrypt.compare(password, userPassword)
 
-      return validPassword
-    } catch (error: any) {
-      throw createError(500, error)
-    }
+    return validPassword
   }
 
   public static validateEmail(email: string) {
@@ -50,112 +46,89 @@ export default class UserService {
     if (errors.length > 0) {
       throw createError(400, errors.join(' | '))
     } else {
-      try {
-        const hashedPassword = await bcrypt.hash(password, 10)
+      const hashedPassword = await bcrypt.hash(password, 10)
 
-        const alreadyUser = await User.findOne({ where: { email: email } })
+      const alreadyUser = await User.findOne({ where: { email: email } })
 
-        if (alreadyUser) throw createError(400, 'Email já utilizado')
+      if (alreadyUser) throw createError(400, 'Email já utilizado')
 
-        await User.create({
-          name,
-          email,
-          password: hashedPassword,
-          provider: 'local',
-        })
+      await User.create({
+        name,
+        email,
+        password: hashedPassword,
+        provider: 'local',
+      })
 
-        return { message: 'Usuário Criado com Sucesso', success: true }
-      } catch (error: any) {
-        throw createError(500, error)
-      }
+      return { message: 'Usuário Criado com Sucesso', success: true }
     }
   }
 
   public static async Login(req: Request, res: Response, next: NextFunction) {
-    try {
-      passport.authenticate(
-        'local',
-        async (err: Error, user: User, info: IVerifyOptions) => {
-          if (err) return next(createError(500, err))
+    passport.authenticate(
+      'local',
+      async (err: Error, user: User, info: IVerifyOptions) => {
+        if (err) return next(createError(500, err))
 
-          if (!user) return next(createError(401, info))
+        if (!user) return next(createError(401, info))
 
-          const newAccessToken = signJwt(user.id, 'Access')
-          const newRefreshToken = signJwt(user.id, 'Refresh')
+        const newAccessToken = signJwt(user.id, 'Access')
+        const newRefreshToken = signJwt(user.id, 'Refresh')
 
-          const alreadyRefreshToken = await RefreshToken.findOne({
-            where: { user_id: user.id },
-          })
+        const alreadyRefreshToken = await RefreshToken.findOne({
+          where: { user_id: user.id },
+        })
 
-          if (alreadyRefreshToken) {
-            await RefreshTokenService.update(newRefreshToken, user.id)
-          } else {
-            await RefreshTokenService.create(newRefreshToken, user.id)
-          }
-
-          sendJwtCookie(res, accessTokenCookieName, newAccessToken, 'Access')
-          sendJwtCookie(res, refreshTokenCookieName, newRefreshToken, 'Refresh')
-          return res.json({
-            message: 'Login realizado com sucesso',
-            token: newAccessToken,
-          })
+        if (alreadyRefreshToken) {
+          await RefreshTokenService.update(newRefreshToken, user.id)
+        } else {
+          await RefreshTokenService.create(newRefreshToken, user.id)
         }
-      )(req, res, next)
-    } catch (error: any) {
-      throw createError(500, error)
-    }
+
+        sendJwtCookie(res, accessTokenCookieName, newAccessToken, 'Access')
+        sendJwtCookie(res, refreshTokenCookieName, newRefreshToken, 'Refresh')
+        return res.json({
+          message: 'Login realizado com sucesso',
+          token: newAccessToken,
+        })
+      }
+    )(req, res, next)
   }
 
   public static async Logout(req: Request, res: Response) {
-    try {
-      const user = req.user
+    const user = req.user
 
-      if (!user)
-        throw createError(
-          400,
-          'Você não está cadastrado para sair de sua conta'
-        )
+    if (!user)
+      throw createError(400, 'Você não está cadastrado para sair de sua conta')
 
-      await RefreshTokenService.removeByUserId(user.id)
+    await RefreshTokenService.removeByUserId(user.id)
 
-      removeJwtCookies(res)
+    removeJwtCookies(res)
 
-      return res.json({ message: 'Você saiu da sua conta com sucesso' })
-    } catch (error: any) {
-      throw createError(500, error)
-    }
+    return res.json({ message: 'Você saiu da sua conta com sucesso' })
   }
 
   public static async findUserById(userId: number) {
-    try {
-      const foundUser = await User.findByPk(userId)
+    const foundUser = await User.findByPk(userId)
 
-      return foundUser
-    } catch (error: any) {
-      throw createError(500, error)
-    }
+    return foundUser
   }
 
   public static async returnUserByCookieToken(req: Request) {
-    try {
-      let user: null | User = null
-      const accessToken = getCookie(req, accessTokenCookieName)
+    let user: null | User = null
+    const accessToken = getCookie(req, accessTokenCookieName)
 
-      if (accessToken) {
-        const parts = accessToken.split('.')
-        if (parts.length !== 3) throw createError(400, 'TokenInválido')
+    if (accessToken) {
+      const parts = accessToken.split('.')
+      if (parts.length !== 3) throw createError(400, 'TokenInválido')
 
-        let payload = null
+      let payload = null
 
-        payload = jwt.verify(accessToken, publicKey)
+      payload = jwt.verify(accessToken, publicKey)
 
-        if (payload) {
-          user = await User.findOne({ where: { id: payload.sub } })
-        }
+      if (payload) {
+        user = await User.findOne({ where: { id: payload.sub } })
       }
-      return user
-    } catch (error: any) {
-      return null
     }
+    return user
   }
 }

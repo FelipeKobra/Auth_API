@@ -3,9 +3,11 @@ import bcrypt from 'bcrypt'
 import request from 'supertest'
 import User from '../../src/Models/UserModel'
 import app from '../../src/app'
-import { setupSequelize } from '../setup/sequelizeSetup'
+import { setupSequelize } from '../config/setup/sequelizeSetup'
 import RefreshTokenService from '../../src/Services/RefreshTokenServices'
 import { signJwt } from '../../src/utils/JwtUtils'
+
+jest.useRealTimers()
 
 describe('User Controller', () => {
   let user: User

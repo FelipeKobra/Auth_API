@@ -4,6 +4,7 @@ import EmailConfirmToken from '../Models/EmailConfirmTokenModel'
 import User from '../Models/UserModel'
 import EmailConfirmTokenService from '../Services/EmailConfirmTokensServices'
 import UserService from '../Services/UserServices'
+import checkIfCustomError from '../utils/checkIfCustomError'
 
 export default class EmailConfirmTokenController {
   public async sendEmailToken(req: Request, res: Response) {
@@ -48,7 +49,7 @@ export default class EmailConfirmTokenController {
         message: `Confirme seu email para continuar. Um token foi enviado para seu email, ou pode ser vizualizado nessa URL em caso de teste: ${emailVizualizer}`,
       })
     } catch (error: any) {
-      throw createError(500, error)
+      checkIfCustomError(error)
     }
   }
 
@@ -79,7 +80,7 @@ export default class EmailConfirmTokenController {
 
       return res.json({ message: 'Usuário autenticado com sucesso!' })
     } catch (error: any) {
-      throw createError(500, error)
+      checkIfCustomError(error)
     }
   }
 }

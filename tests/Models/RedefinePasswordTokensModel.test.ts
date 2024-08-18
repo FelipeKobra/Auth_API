@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript'
 import RedefinePasswordTokens from '../../src/Models/RedefinePasswordTokensModel'
-import { setupSequelize } from '../setup/sequelizeSetup'
+import { setupSequelize } from '../config/setup/sequelizeSetup'
 
 describe('RedefinePasswordTokens Model', () => {
   let sequelize: Sequelize

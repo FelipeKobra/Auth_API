@@ -1,4 +1,4 @@
-import { setupSequelize } from '../setup/sequelizeSetup'
+import { setupSequelize } from '../config/setup/sequelizeSetup'
 import User from '../../src/Models/UserModel'
 import { Sequelize } from 'sequelize-typescript'
 

@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript'
 import EmailConfirmToken from '../../src/Models/EmailConfirmTokenModel'
-import { setupSequelize } from '../setup/sequelizeSetup'
+import { setupSequelize } from '../config/setup/sequelizeSetup'
 
 describe('EmailConfirmToken Model', () => {
   let sequelize: Sequelize

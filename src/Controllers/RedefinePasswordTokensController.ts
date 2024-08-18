@@ -7,6 +7,7 @@ import RedefinePasswordTokensServices from '../Services/RedefinePasswordTokensSe
 import UserService from '../Services/UserServices'
 import { baseUrl } from '../data/URL'
 import { checkIfPreviousDate } from '../utils/VerifyUtils'
+import checkIfCustomError from '../utils/checkIfCustomError'
 
 export default class RedefinePasswordTokensController {
   public async sendToken(req: Request, res: Response, next: NextFunction) {
@@ -17,7 +18,7 @@ export default class RedefinePasswordTokensController {
 
       if (!user) return next(createError(400, 'Número de usuário inválido'))
 
-      const token = await RedefinePasswordTokensServices.findTokenyByUserId(
+      const token = await RedefinePasswordTokensServices.findTokenByUserId(
         user.id
       )
 
@@ -75,7 +76,7 @@ export default class RedefinePasswordTokensController {
         message: `Nova redefinição de senha enviada para o seu email, ou pode ser vizualizada nesse link ${emailVizualizer}`,
       })
     } catch (error: any) {
-      throw createError(500, error)
+      checkIfCustomError(error)
     }
   }
 
@@ -99,7 +100,7 @@ export default class RedefinePasswordTokensController {
 
       return res.redirect(baseUrl + '/redefinePassword/' + user.id)
     } catch (error: any) {
-      throw createError(500, error)
+      checkIfCustomError(error)
     }
   }
 
@@ -140,7 +141,7 @@ export default class RedefinePasswordTokensController {
 
       return res.json({ message: 'Senha alterada com sucesso!' })
     } catch (error: any) {
-      throw createError(500, error)
+      checkIfCustomError(error)
     }
   }
 }

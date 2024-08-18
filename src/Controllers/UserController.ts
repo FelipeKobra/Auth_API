@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import createError from 'http-errors'
 import UserService from '../Services/UserServices'
+import checkIfCustomError from '../utils/checkIfCustomError'
 
 export default class UserController {
   public async registerUser(req: Request, res: Response, next: NextFunction) {
@@ -32,7 +33,7 @@ export default class UserController {
         return next(response)
       }
     } catch (error: any) {
-      throw createError(500, error)
+      checkIfCustomError(error)
     }
   }
 
@@ -52,9 +53,9 @@ export default class UserController {
         )
       }
 
-      await UserService.Login(req, res, next)
+      return await UserService.Login(req, res, next)
     } catch (error: any) {
-      throw createError(500, error)
+      checkIfCustomError(error)
     }
   }
 
@@ -62,7 +63,7 @@ export default class UserController {
     try {
       return await UserService.Logout(req, res)
     } catch (error: any) {
-      throw createError(500, error)
+      checkIfCustomError(error)
     }
   }
 }

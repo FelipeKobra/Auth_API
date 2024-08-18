@@ -1,6 +1,6 @@
 import request from 'supertest'
 import User from '../../src/Models/UserModel'
-import { setupSequelize } from '../setup/sequelizeSetup'
+import { setupSequelize } from '../config/setup/sequelizeSetup'
 import EmailConfirmToken from '../../src/Models/EmailConfirmTokenModel'
 import { Sequelize } from 'sequelize-typescript'
 import EmailConfirmTokenService from '../../src/Services/EmailConfirmTokensServices'

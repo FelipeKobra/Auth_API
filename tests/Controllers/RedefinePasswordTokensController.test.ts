@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 import User from '../../src/Models/UserModel'
 import app from '../../src/app'
 import { baseUrl } from '../../src/data/URL'
-import { setupSequelize } from '../setup/sequelizeSetup'
+import { setupSequelize } from '../config/setup/sequelizeSetup'
 import RedefinePasswordTokensServices from '../../src/Services/RedefinePasswordTokensServices'
 import RedefinePasswordTokens from '../../src/Models/RedefinePasswordTokensModel'
 

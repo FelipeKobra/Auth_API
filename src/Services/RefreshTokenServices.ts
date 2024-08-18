@@ -7,45 +7,33 @@ import { signJwt, validateJwt } from '../utils/JwtUtils'
 
 export default class RefreshTokenService {
   public static async validateRefreshToken(token: string) {
-    try {
-      const validToken = validateJwt(token)
-      if (!validToken) return null
+    const validToken = validateJwt(token)
+    if (!validToken) return null
 
-      const DatabaseToken = await RefreshToken.findOne({ where: { token } })
+    const DatabaseToken = await RefreshToken.findOne({ where: { token } })
 
-      if (!DatabaseToken) return null
-      if (!DatabaseToken.user_id) return null
-      if (DatabaseToken.expire_date < new Date()) return null
+    if (!DatabaseToken) return null
+    if (!DatabaseToken.user_id) return null
+    if (DatabaseToken.expire_date < new Date()) return null
 
-      return DatabaseToken
-    } catch (error: any) {
-      throw createError(500, error)
-    }
+    return DatabaseToken
   }
 
   public static async update(token: string, userid: number) {
-    try {
-      let hoje = new Date()
-      hoje.setMonth(hoje.getMonth() + 1)
+    let hoje = new Date()
+    hoje.setMonth(hoje.getMonth() + 1)
 
-      await RefreshToken.update(
-        { token, expire_date: hoje },
-        { where: { id: userid } }
-      )
-    } catch (error: any) {
-      throw createError(500, error)
-    }
+    await RefreshToken.update(
+      { token, expire_date: hoje },
+      { where: { id: userid } }
+    )
   }
 
   public static async create(token: string, userid: number) {
-    try {
-      let hoje = new Date()
-      hoje.setMonth(hoje.getMonth() + 1)
+    let hoje = new Date()
+    hoje.setMonth(hoje.getMonth() + 1)
 
-      await RefreshToken.create({ user_id: userid, token, expire_date: hoje })
-    } catch (error: any) {
-      throw createError(500, error)
-    }
+    await RefreshToken.create({ user_id: userid, token, expire_date: hoje })
   }
 
   public static async updateAccessTokenWithRefreshToken(req: Request) {
@@ -69,10 +57,6 @@ export default class RefreshTokenService {
   }
 
   public static async removeByUserId(userId: number) {
-    try {
-      await RefreshToken.destroy({ where: { user_id: userId } })
-    } catch (error: any) {
-      throw createError(500, error)
-    }
+    await RefreshToken.destroy({ where: { user_id: userId } })
   }
 }

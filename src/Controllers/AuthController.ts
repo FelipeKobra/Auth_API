@@ -11,6 +11,7 @@ import {
 } from '../data/JwtCookieNames'
 import { sendJwtCookie } from '../utils/CookiesUtils'
 import { signJwt } from '../utils/JwtUtils'
+import checkIfCustomError from '../utils/checkIfCustomError'
 
 export default class AuthController {
   public async googleCallback(req: Request, res: Response, next: NextFunction) {
@@ -48,7 +49,7 @@ export default class AuthController {
         }
       )(req, res, next)
     } catch (error: any) {
-      throw createError(500, error)
+      checkIfCustomError(error)
     }
   }
 }

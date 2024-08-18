@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize'
-import { setupSequelize } from '../setup/sequelizeSetup'
+import { setupSequelize } from '../config/setup/sequelizeSetup'
 import RefreshToken from '../../src/Models/RefreshTokenModel'
 import User from '../../src/Models/UserModel'
 

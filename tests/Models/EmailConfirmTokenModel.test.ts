@@ -7,13 +7,17 @@ describe('EmailConfirmToken Model', () => {
   const user_id = 123
   let emailConfirmToken: EmailConfirmToken
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     sequelize = await setupSequelize()
     emailConfirmToken = await EmailConfirmToken.create({
       user_id: user_id,
       token: 'some-token',
       expire_date: new Date(),
     })
+  })
+
+  afterAll(async () => {
+    await sequelize.close()
   })
 
   it('Deve criar um Email Confirm Token corretamente', async () => {

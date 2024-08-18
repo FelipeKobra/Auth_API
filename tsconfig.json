@@ -11,6 +11,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["./**/*.ts", "tests/Controllers/UserController.test.ts.backup"],
+  "include": ["./**/*.ts"],
   "exclude": ["node_modules"]
 }

@@ -128,7 +128,7 @@ export default class UserService {
 
   public static async findUserById(userId: number) {
     try {
-      const foundUser = await User.findOne({ where: { id: userId } })
+      const foundUser = await User.findByPk(userId)
 
       return foundUser
     } catch (error: any) {

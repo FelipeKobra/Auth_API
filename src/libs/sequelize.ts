@@ -6,6 +6,7 @@ import { config } from 'dotenv'
 import EmailConfirmToken from '../Models/EmailConfirmTokenModel'
 import Account from '../Models/AccountModel'
 import RedefinePasswordTokens from '../Models/RedefinePasswordTokensModel'
+import { environmentCases } from '../data/EnvironmentModes'
 config()
 
 const sequelize = new Sequelize({
@@ -24,5 +25,11 @@ const sequelize = new Sequelize({
   ],
   logging: false,
 })
+
+export function syncSequelize() {
+  if (process.env.NODE_ENV !== 'test') {
+    sequelize.sync({ alter: environmentCases(true, false) })
+  }
+}
 
 export default sequelize

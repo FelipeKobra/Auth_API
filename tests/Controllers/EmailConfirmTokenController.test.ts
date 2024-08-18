@@ -15,6 +15,10 @@ describe('Email Confirm Token Controller', () => {
     user = await User.create({ email: 'teste@email.com', name: 'teste' })
   })
 
+  afterAll(async () => {
+    await sequelize.close()
+  })
+
   describe('Send email token', () => {
     it('Deve autenticar o usuário com sucesso', async () => {
       const response = await request(app).get('/confirmEmail/1')

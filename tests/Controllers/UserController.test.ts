@@ -20,6 +20,9 @@ describe('User Controller', () => {
     })
   })
 
+  afterEach(async () => {
+    await sequelize.close()
+  })
 
   describe('Register User', () => {
     it('Deve registrar um usuário com sucesso', async () => {

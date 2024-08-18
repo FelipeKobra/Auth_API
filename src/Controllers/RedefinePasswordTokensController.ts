@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import createError from 'http-errors'
 import RedefinePasswordTokens from '../Models/RedefinePasswordTokensModel'
 import User from '../Models/UserModel'
@@ -9,13 +9,13 @@ import { baseUrl } from '../data/URL'
 import { checkIfPreviousDate } from '../utils/VerifyUtils'
 
 export default class RedefinePasswordTokensController {
-  public async sendToken(req: Request, res: Response) {
+  public async sendToken(req: Request, res: Response, next: NextFunction) {
     try {
       const { userid } = req.params
 
       const user = await UserService.findUserById(parseInt(userid))
 
-      if (!user) return createError(400, 'Número de usuário inválido')
+      if (!user) return next(createError(400, 'Número de usuário inválido'))
 
       const token = await RedefinePasswordTokensServices.findTokenyByUserId(
         user.id
@@ -79,16 +79,22 @@ export default class RedefinePasswordTokensController {
     }
   }
 
-  public async redirectToSendToken(req: Request, res: Response) {
+  public async redirectToSendToken(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
       const { email } = req.body
 
       const user = await User.findOne({ where: { email } })
 
       if (!user)
-        return createError(
-          401,
-          'Email incorreto, lembre de adiconar o campo `email`'
+        return next(
+          createError(
+            401,
+            'Email incorreto, lembre de adiconar o campo `email`'
+          )
         )
 
       return res.redirect(baseUrl + '/redefinePassword/' + user.id)

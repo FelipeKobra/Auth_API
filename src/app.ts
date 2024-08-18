@@ -6,7 +6,7 @@ import 'express-async-errors'
 import path from 'path'
 import errorHandlerMiddleware from './Middlewares/ErrorHandler'
 import { environmentCases } from './data/EnvironmentModes'
-import sequelize from './libs/sequelize'
+import sequelize, { syncSequelize } from './libs/sequelize'
 import { ProtectedRouter } from './routes/ProtectedRoutes'
 import { UserRouter } from './routes/UserRoutes'
 
@@ -22,7 +22,7 @@ import { RedefinePasswordRouter } from './routes/RedefinePasswordTokensRoutes'
 //General Config
 config()
 const app = express()
-sequelize.sync({ alter: environmentCases(true, false) })
+syncSequelize()
 
 //Middlewares
 app.use(express.json())

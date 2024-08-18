@@ -16,6 +16,10 @@ describe('RefreshToken model', () => {
     })
   })
 
+  afterEach(async () => {
+    await sequelize.close()
+  })
+
   it('Deve criar um novo token de refresh', async () => {
     const refreshToken = await RefreshToken.create({
       user_id: user.id,

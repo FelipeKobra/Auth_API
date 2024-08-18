@@ -15,6 +15,10 @@ describe('User model', () => {
     })
   })
 
+  afterEach(async () => {
+    await sequelize.close()
+  })
+
   it('Criar novo usuário', async () => {
     expect(user.name).toBe('John Doe')
     expect(user.email).toBe('johndoe@example.com')

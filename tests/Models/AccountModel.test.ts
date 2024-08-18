@@ -15,6 +15,10 @@ describe('Account Model', () => {
     })
   })
 
+  afterEach(async () => {
+    await sequelize.close()
+  })
+
   it('Criar nova conta', async () => {
     expect(account).toHaveProperty('id')
     expect(account.user_id).toBe(1)

@@ -9,14 +9,17 @@ describe('RedefinePasswordTokens Model', () => {
   const token = 'some-token'
   const expire_date = new Date()
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     sequelize = await setupSequelize()
-
     redefinePasswordToken = await RedefinePasswordTokens.create({
       user_id: user_id,
       token,
       expire_date,
     })
+  })
+
+  afterAll(async () => {
+    await sequelize.close()
   })
 
   it('Deve criar um RedefinePasswordToken corretamente', async () => {

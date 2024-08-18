@@ -19,26 +19,26 @@ describe('Account Model', () => {
     await sequelize.close()
   })
 
-  it('Criar nova conta', async () => {
+  it('Deve criar nova conta', async () => {
     expect(account).toHaveProperty('id')
     expect(account.user_id).toBe(1)
     expect(account.provider).toBe('google')
     expect(account.providerAccountId).toBe('1234567890')
   })
 
-  it('Atualizar uma conta existente', async () => {
+  it('Deve atualizar uma conta existente', async () => {
     await account.update({
       refreshToken: 'new-refresh-token',
     })
     expect(account.refreshToken).toBe('new-refresh-token')
   })
 
-  it('Deletar uma conta existente', async () => {
+  it('Deve deletar uma conta existente', async () => {
     await account.destroy()
     expect(await Account.count()).toBe(0)
   })
 
-  it('Criar conta com dados inválidos', async () => {
+  it('Deve criar conta com dados inválidos', async () => {
     // @ts-ignore
 
     await expect(Account.create({})).rejects.toThrow()
@@ -48,7 +48,7 @@ describe('Account Model', () => {
     await expect(Account.create({ providerAccountId: '' })).rejects.toThrow()
   })
 
-  it('Atualizar conta com dados inválidos', async () => {
+  it('Deve atualizar conta com dados inválidos', async () => {
     // Tentar atualizar com provider inválido
     await expect(account.update({ provider: '' })).rejects.toThrow()
 
@@ -61,11 +61,11 @@ describe('Account Model', () => {
     await expect(account.update({ user_id: null })).rejects.toThrow()
   })
 
-  it('Excluir conta inexistente', async () => {
+  it('Deve excluir conta inexistente', async () => {
     await expect(Account.destroy({ where: { id: 999 } })).resolves.toBe(0)
   })
 
-  it('Buscar conta existente', async () => {
+  it('Deve buscar conta existente', async () => {
     const foundAccount = await Account.findByPk(account.id)
     expect(foundAccount).not.toBeNull()
     // @ts-ignore
@@ -76,7 +76,7 @@ describe('Account Model', () => {
     expect(foundAccount.providerAccountId).toBe('1234567890')
   })
 
-  it('Buscar conta inexistente', async () => {
+  it('Deve buscar conta inexistente', async () => {
     const foundAccount = await Account.findByPk(999)
     expect(foundAccount).toBeNull()
   })

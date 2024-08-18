@@ -119,7 +119,7 @@ export default class UserService {
 
     if (accessToken) {
       const parts = accessToken.split('.')
-      if (parts.length !== 3) throw createError(400, 'TokenInválido')
+      if (parts.length !== 3) throw createError(400, 'Token Inválido')
 
       let payload = null
 

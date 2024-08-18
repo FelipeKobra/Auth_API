@@ -57,6 +57,7 @@ export default class RefreshTokenService {
   }
 
   public static async removeByUserId(userId: number) {
-    await RefreshToken.destroy({ where: { user_id: userId } })
+    const sla = await RefreshToken.destroy({ where: { user_id: userId } })
+    return sla
   }
 }

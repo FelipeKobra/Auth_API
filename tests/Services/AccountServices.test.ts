@@ -6,7 +6,7 @@ import AccountServices from '../../src/Services/AccountServices'
 describe('AccountServices', () => {
   const unixDate = Math.floor(new Date().getTime() / 1000)
   describe('createAccount', () => {
-    it('should create a new account', async () => {
+    it('Deve criar uma nova conta', async () => {
       const createAccountParams: CreateAccountParams = {
         provider: 'google',
         providerAccountId: '1234567890',
@@ -33,7 +33,7 @@ describe('AccountServices', () => {
       })
     })
 
-    it('should throw an error if account creation fails', async () => {
+    it('Deve lançar um erro caso haja falha na criação da conta', async () => {
       const createAccountParams: CreateAccountParams = {
         provider: 'google',
         providerAccountId: '1234567890',
@@ -52,7 +52,7 @@ describe('AccountServices', () => {
       ).rejects.toThrow(createError(500, 'Mocked error'))
     })
 
-    it('should set default tokenType to Bearer if not provided', async () => {
+    it('Deve definir o tipo do token como Bearer, caso não definido', async () => {
       const createAccountParams: CreateAccountParams = {
         provider: 'google',
         providerAccountId: '1234567890',
@@ -79,7 +79,7 @@ describe('AccountServices', () => {
       })
     })
 
-    it('should set default type to oauth if not provided', async () => {
+    it('Deve definir o tipo da conta como oauth, caso não definido', async () => {
       const createAccountParams: CreateAccountParams = {
         provider: 'google',
         providerAccountId: '1234567890',

@@ -17,7 +17,7 @@ describe('Serviço de Token de Redefinição de Senha', () => {
   })
 
   describe('findTokenByUserId', () => {
-    it('deve encontrar um token de redefinição de senha por usuário com sucesso', async () => {
+    it('Deve encontrar um token de redefinição de senha por usuário com sucesso', async () => {
       const token = await RedefinePasswordTokensServices.createToken(user.id)
       const result = await RedefinePasswordTokensServices.findTokenByUserId(
         user.id
@@ -25,12 +25,12 @@ describe('Serviço de Token de Redefinição de Senha', () => {
       expect(result).toBeInstanceOf(RedefinePasswordTokens)
     })
 
-    it('deve retornar null se não encontrar um token de redefinição de senha por usuário', async () => {
+    it('Deve retornar null se não encontrar um token de redefinição de senha por usuário', async () => {
       const result = await RedefinePasswordTokensServices.findTokenByUserId(2)
       expect(result).toBeNull()
     })
 
-    it('deve lançar um erro se a busca do token por usuário falhar', async () => {
+    it('Deve lançar um erro se a busca do token por usuário falhar', async () => {
       try {
         // @ts-expect-error
         await RedefinePasswordTokensServices.findTokenByUserId(null)
@@ -42,7 +42,7 @@ describe('Serviço de Token de Redefinição de Senha', () => {
   })
 
   describe('findTokenByToken', () => {
-    it('deve encontrar um token de redefinição de senha por token com sucesso', async () => {
+    it('Deve encontrar um token de redefinição de senha por token com sucesso', async () => {
       const token = await RedefinePasswordTokensServices.createToken(user.id)
       const result = await RedefinePasswordTokensServices.findTokenByToken(
         token.token
@@ -50,7 +50,7 @@ describe('Serviço de Token de Redefinição de Senha', () => {
       expect(result).toBeInstanceOf(RedefinePasswordTokens)
     })
 
-    it('deve retornar null se não encontrar um token de redefinição de senha por token', async () => {
+    it('Deve retornar null se não encontrar um token de redefinição de senha por token', async () => {
       const result =
         await RedefinePasswordTokensServices.findTokenByToken(
           'token-inexistente'
@@ -58,7 +58,7 @@ describe('Serviço de Token de Redefinição de Senha', () => {
       expect(result).toBeNull()
     })
 
-    it('deve lançar um erro se a busca do token por token falhar', async () => {
+    it('Deve lançar um erro se a busca do token por token falhar', async () => {
       try {
         await RedefinePasswordTokensServices.findTokenByToken('')
         fail('Erro esperado')
@@ -69,12 +69,12 @@ describe('Serviço de Token de Redefinição de Senha', () => {
   })
 
   describe('createToken', () => {
-    it('deve criar um token de redefinição de senha com sucesso', async () => {
+    it('Deve criar um token de redefinição de senha com sucesso', async () => {
       const result = await RedefinePasswordTokensServices.createToken(user.id)
       expect(result).toBeInstanceOf(RedefinePasswordTokens)
     })
 
-    it('deve lançar um erro se a criação do token falhar', async () => {
+    it('Deve lançar um erro se a criação do token falhar', async () => {
       try {
         // @ts-expect-error
         await RedefinePasswordTokensServices.createToken(null)
@@ -86,7 +86,7 @@ describe('Serviço de Token de Redefinição de Senha', () => {
   })
 
   describe('sendToken', () => {
-    it('deve enviar um token de redefinição de senha com sucesso', async () => {
+    it('Deve enviar um token de redefinição de senha com sucesso', async () => {
       const token = await RedefinePasswordTokensServices.createToken(user.id)
       const tokenURL = RedefinePasswordTokensServices.createTokenURL(
         token.token
@@ -99,7 +99,7 @@ describe('Serviço de Token de Redefinição de Senha', () => {
       expect(typeof result).toBe('string')
     })
 
-    it('deve lançar um erro se o envio do token falhar', async () => {
+    it('Deve lançar um erro se o envio do token falhar', async () => {
       try {
         await RedefinePasswordTokensServices.sendToken(
           user.email,
@@ -115,13 +115,13 @@ describe('Serviço de Token de Redefinição de Senha', () => {
   })
 
   describe('updateToken', () => {
-    it('deve atualizar um token de redefinição de senha com sucesso', async () => {
+    it('Deve atualizar um token de redefinição de senha com sucesso', async () => {
       await RedefinePasswordTokensServices.createToken(user.id)
       const result = await RedefinePasswordTokensServices.updateToken(user.id)
       expect(result).toBeInstanceOf(RedefinePasswordTokens)
     })
 
-    it('deve lançar um erro se a atualização do token falhar', async () => {
+    it('Deve lançar um erro se a atualização do token falhar', async () => {
       try {
         // @ts-expect-error
         await RedefinePasswordTokensServices.updateToken(null)

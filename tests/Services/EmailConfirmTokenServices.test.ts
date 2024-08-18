@@ -20,7 +20,7 @@ describe('Serviço de Token de Confirmação de Email', () => {
   describe('sendToken', () => {
     const receiverEmail = 'teste@example.com'
     const receiverName = 'Teste'
-    it('deve enviar um token de confirmação de email com sucesso', async () => {
+    it('Deve enviar um token de confirmação de email com sucesso', async () => {
       const result = await EmailConfirmTokenService.sendToken(
         receiverEmail,
         receiverName,
@@ -29,7 +29,7 @@ describe('Serviço de Token de Confirmação de Email', () => {
       expect(typeof result).toBe('string')
     })
 
-    it('deve lançar um erro se o envio do token falhar', async () => {
+    it('Deve lançar um erro se o envio do token falhar', async () => {
       const token = 'token-de-teste'
 
       try {
@@ -47,7 +47,7 @@ describe('Serviço de Token de Confirmação de Email', () => {
   })
 
   describe('createToken', () => {
-    it('deve criar um token de confirmação de email com sucesso', async () => {
+    it('Deve criar um token de confirmação de email com sucesso', async () => {
       const userid = 1
 
       const result = await EmailConfirmTokenService.createToken(userid)
@@ -55,7 +55,7 @@ describe('Serviço de Token de Confirmação de Email', () => {
       expect(result).toHaveProperty('expired', false)
     })
 
-    it('deve lançar um erro se a criação do token falhar', async () => {
+    it('Deve lançar um erro se a criação do token falhar', async () => {
       try {
         // @ts-expect-error
         await EmailConfirmTokenService.createToken(null)
@@ -69,7 +69,7 @@ describe('Serviço de Token de Confirmação de Email', () => {
   })
 
   describe('updateToken', () => {
-    it('deve atualizar um token de confirmação de email com sucesso', async () => {
+    it('Deve atualizar um token de confirmação de email com sucesso', async () => {
       const userid = 1
 
       const result = await EmailConfirmTokenService.updateToken(userid)
@@ -77,7 +77,7 @@ describe('Serviço de Token de Confirmação de Email', () => {
       expect(result).toHaveProperty('expired', false)
     })
 
-    it('deve lançar um erro se a atualização do token falhar', async () => {
+    it('Deve lançar um erro se a atualização do token falhar', async () => {
       try {
         // @ts-expect-error
         await EmailConfirmTokenService.updateToken(null)
@@ -90,7 +90,7 @@ describe('Serviço de Token de Confirmação de Email', () => {
   })
 
   describe('searchTokenByUserId', () => {
-    it('deve encontrar um token de confirmação de email por usuário com sucesso', async () => {
+    it('Deve encontrar um token de confirmação de email por usuário com sucesso', async () => {
       const userid = 1
       await EmailConfirmTokenService.createToken(1)
 
@@ -99,14 +99,14 @@ describe('Serviço de Token de Confirmação de Email', () => {
       expect(result).toHaveProperty('expired', false)
     })
 
-    it('deve retornar null se não encontrar um token de confirmação de email por usuário', async () => {
+    it('Deve retornar null se não encontrar um token de confirmação de email por usuário', async () => {
       const userid = 2
 
       const result = await EmailConfirmTokenService.searchTokenByUserId(userid)
       expect(result).toBeNull()
     })
 
-    it('deve lançar um erro se a busca do token por usuário falhar', async () => {
+    it('Deve lançar um erro se a busca do token por usuário falhar', async () => {
       try {
         //@ts-expect-error
         await EmailConfirmTokenService.searchTokenByUserId(null)
@@ -119,7 +119,7 @@ describe('Serviço de Token de Confirmação de Email', () => {
   })
 
   describe('searchTokenByToken', () => {
-    it('deve encontrar um token de confirmação de email por token com sucesso', async () => {
+    it('Deve encontrar um token de confirmação de email por token com sucesso', async () => {
       const tokenService = await EmailConfirmTokenService.createToken(1)
 
       const result = await EmailConfirmTokenService.searchTokenByToken(
@@ -128,14 +128,14 @@ describe('Serviço de Token de Confirmação de Email', () => {
       expect(result).toBeInstanceOf(EmailConfirmToken)
     })
 
-    it('deve retornar null se não encontrar um token de confirmação de email por token', async () => {
+    it('Deve retornar null se não encontrar um token de confirmação de email por token', async () => {
       const token = 'token-inexistente'
 
       const result = await EmailConfirmTokenService.searchTokenByToken(token)
       expect(result).toBeNull()
     })
 
-    it('deve lançar um erro se a busca do token por token falhar', async () => {
+    it('Deve lançar um erro se a busca do token por token falhar', async () => {
       try {
         await EmailConfirmTokenService.searchTokenByToken('')
         fail('Erro esperado')

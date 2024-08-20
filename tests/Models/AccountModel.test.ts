@@ -39,12 +39,12 @@ describe('Account Model', () => {
   })
 
   it('Deve criar conta com dados inválidos', async () => {
-    // @ts-ignore
+    // @ts-expect-error Teste
 
     await expect(Account.create({})).rejects.toThrow()
-    // @ts-ignore
+    // @ts-expect-error Teste
     await expect(Account.create({ user_id: null })).rejects.toThrow()
-    // @ts-ignore
+    // @ts-expect-error Teste
     await expect(Account.create({ providerAccountId: '' })).rejects.toThrow()
   })
 
@@ -52,11 +52,11 @@ describe('Account Model', () => {
     // Tentar atualizar com provider inválido
     await expect(account.update({ provider: '' })).rejects.toThrow()
 
-    // @ts-ignore
+    // @ts-expect-error Teste
     // Tentar atualizar com providerAccountId inválido
     await expect(account.update({ providerAccountId: null })).rejects.toThrow()
 
-    // @ts-ignore
+    // @ts-expect-error Teste
     // Tentar atualizar com user_id inválido
     await expect(account.update({ user_id: null })).rejects.toThrow()
   })
@@ -68,11 +68,11 @@ describe('Account Model', () => {
   it('Deve buscar conta existente', async () => {
     const foundAccount = await Account.findByPk(account.id)
     expect(foundAccount).not.toBeNull()
-    // @ts-ignore
+    // @ts-expect-error Teste
     expect(foundAccount.user_id).toBe(1)
-    // @ts-ignore
+    // @ts-expect-error Teste
     expect(foundAccount.provider).toBe('google')
-    // @ts-ignore
+    // @ts-expect-error Teste
     expect(foundAccount.providerAccountId).toBe('1234567890')
   })
 

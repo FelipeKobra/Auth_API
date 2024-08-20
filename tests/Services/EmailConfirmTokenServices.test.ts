@@ -7,10 +7,10 @@ import { setupSequelize } from '../config/setup/sequelizeSetup'
 
 describe('Serviço de Token de Confirmação de Email', () => {
   let sequelize: Sequelize
-  let user: User
+
   beforeEach(async () => {
     sequelize = await setupSequelize()
-    user = await User.create({ email: 'teste@email.com', name: 'teste' })
+    await User.create({ email: 'teste@email.com', name: 'teste' })
   })
 
   afterEach(async () => {
@@ -57,7 +57,7 @@ describe('Serviço de Token de Confirmação de Email', () => {
 
     it('Deve lançar um erro se a criação do token falhar', async () => {
       try {
-        // @ts-expect-error
+        // @ts-expect-error Teste
         await EmailConfirmTokenService.createToken(null)
 
         fail('Erro esperado')
@@ -79,7 +79,7 @@ describe('Serviço de Token de Confirmação de Email', () => {
 
     it('Deve lançar um erro se a atualização do token falhar', async () => {
       try {
-        // @ts-expect-error
+        // @ts-expect-error Teste
         await EmailConfirmTokenService.updateToken(null)
         fail('Erro esperado')
       } catch (error: any) {
@@ -108,7 +108,7 @@ describe('Serviço de Token de Confirmação de Email', () => {
 
     it('Deve lançar um erro se a busca do token por usuário falhar', async () => {
       try {
-        //@ts-expect-error
+        //@ts-expect-error Teste
         await EmailConfirmTokenService.searchTokenByUserId(null)
         fail('Erro esperado')
       } catch (error: any) {

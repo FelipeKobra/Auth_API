@@ -64,7 +64,7 @@ describe('RefreshToken model', () => {
   })
 
   it('Deve buscar token de refresh por usuário', async () => {
-    const refreshToken = await RefreshToken.create({
+    await RefreshToken.create({
       user_id: user.id,
       token: 'token-de-refresh',
       expire_date: new Date(Date.now() + 3600000), // 1 hora
@@ -75,9 +75,9 @@ describe('RefreshToken model', () => {
     })
 
     expect(foundRefreshToken).not.toBeNull()
-    //@ts-ignore
+    // @ts-expect-error Teste
     expect(foundRefreshToken.user_id).toBe(user.id)
-    //@ts-ignore
+    // @ts-expect-error Teste
     expect(foundRefreshToken.token).toBe('token-de-refresh')
   })
 })

@@ -8,7 +8,7 @@ export const JwtStrategyProvider: JwtProviderType = async (
   done
 ) => {
   try {
-    let user = await UserService.findUserById(parseInt(jwt_payload.sub))
+    const user = await UserService.findUserById(parseInt(jwt_payload.sub))
 
     if (user instanceof HttpError) return done(user, false)
     if (user) return done(null, user)

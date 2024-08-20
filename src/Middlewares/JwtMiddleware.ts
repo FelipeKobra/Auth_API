@@ -31,7 +31,7 @@ export const JwtMiddleware: MiddlewareType = async (req, res, next) => {
             sendJwtCookie(
               res,
               accessTokenCookieName,
-              NewTokens.newAcessToken,
+              NewTokens.newAccessToken,
               'Access'
             )
             sendJwtCookie(

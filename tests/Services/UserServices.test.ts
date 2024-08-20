@@ -22,11 +22,10 @@ jest.mock('../../src/utils/CookiesUtils', () => {
 
 describe('UserService', () => {
   let sequelize: Sequelize
-  let user: User
 
   beforeEach(async () => {
     sequelize = await setupSequelize()
-    user = await User.create({ email: 'johndoe@gmail.com', name: 'John Doe' })
+    await User.create({ email: 'johndoe@gmail.com', name: 'John Doe' })
   })
 
   afterEach(async () => {
@@ -161,13 +160,12 @@ describe('UserService', () => {
     })
 
     it('Deve retornar null se token for inválido', async () => {
-      let userNull: User | null
       const req = { cookies: { accessToken: 'invalidToken' } } as any
       jest.spyOn(jwt, 'verify').mockImplementation(() => {
         throw new Error('Token Inválido')
       })
       try {
-        userNull = await UserService.returnUserByCookieToken(req)
+        await UserService.returnUserByCookieToken(req)
 
         fail('Deveria ter gerado um erro')
       } catch (error) {

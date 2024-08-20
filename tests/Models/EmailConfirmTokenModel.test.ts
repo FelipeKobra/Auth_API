@@ -29,7 +29,7 @@ describe('EmailConfirmToken Model', () => {
 
   it('Deve gerar um erro caso o id não seja adicionado', async () => {
     try {
-      // @ts-ignore
+      // @ts-expect-error Teste
       await EmailConfirmToken.create({
         token: 'some-token',
         expire_date: new Date(),
@@ -42,7 +42,7 @@ describe('EmailConfirmToken Model', () => {
 
   it('Deve gerar um erro caso o token não seja adicionado', async () => {
     try {
-      // @ts-ignore
+      // @ts-expect-error Teste
       await EmailConfirmToken.create({
         user_id: 1,
         expire_date: new Date(),
@@ -55,7 +55,7 @@ describe('EmailConfirmToken Model', () => {
 
   it('Deve gerar um erro caso o expire_date não seja adicionado', async () => {
     try {
-      // @ts-ignore
+      // @ts-expect-error Teste
       await EmailConfirmToken.create({
         user_id: 1,
         token: 'some-token',
@@ -67,12 +67,12 @@ describe('EmailConfirmToken Model', () => {
   })
 
   it('Deve ser null por padrão', async () => {
-    expect(emailConfirmToken.emailVizualizer).toBeNull()
+    expect(emailConfirmToken.emailVisualizer).toBeNull()
   })
 
   it('Deve gerar um erro caso o user_id seja nulo', async () => {
     try {
-      // @ts-ignore
+      // @ts-expect-error Teste
       await EmailConfirmToken.create({
         token: 'some-token',
         expire_date: new Date(),

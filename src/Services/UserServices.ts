@@ -27,12 +27,13 @@ export default class UserService {
   }
 
   public static validateEmail(email: string) {
+    // eslint-disable-next-line no-useless-escape
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     return emailRegex.test(email)
   }
 
   public static async Register(name: string, email: string, password: string) {
-    let errors = []
+    const errors = []
 
     if (!name || name.length < 1) errors.push('Digite um nome válido')
     if (!email) errors.push('Digite seu nome')

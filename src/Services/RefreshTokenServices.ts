@@ -20,7 +20,7 @@ export default class RefreshTokenService {
   }
 
   public static async update(token: string, userid: number) {
-    let hoje = new Date()
+    const hoje = new Date()
     hoje.setMonth(hoje.getMonth() + 1)
 
     await RefreshToken.update(
@@ -30,7 +30,7 @@ export default class RefreshTokenService {
   }
 
   public static async create(token: string, userid: number) {
-    let hoje = new Date()
+    const hoje = new Date()
     hoje.setMonth(hoje.getMonth() + 1)
 
     await RefreshToken.create({ user_id: userid, token, expire_date: hoje })
@@ -44,20 +44,20 @@ export default class RefreshTokenService {
     const validatedRefreshToken = await this.validateRefreshToken(refreshToken)
     if (!validatedRefreshToken) return createError(401, 'Token Inválido')
 
-    const newAcessToken = signJwt(validatedRefreshToken.user_id, 'Access')
+    const newAccessToken = signJwt(validatedRefreshToken.user_id, 'Access')
     const newRefreshToken = signJwt(validatedRefreshToken.user_id, 'Refresh')
 
     await this.update(newRefreshToken, validatedRefreshToken.user_id)
 
     return {
       oldRefreshTokenObject: validatedRefreshToken,
-      newAcessToken,
+      newAccessToken: newAccessToken,
       newRefreshToken,
     }
   }
 
   public static async removeByUserId(userId: number) {
-    const sla = await RefreshToken.destroy({ where: { user_id: userId } })
-    return sla
+    const linhasDeletadas = await RefreshToken.destroy({ where: { user_id: userId } })
+    return linhasDeletadas
   }
 }

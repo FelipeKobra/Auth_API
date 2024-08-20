@@ -18,7 +18,7 @@ describe('Serviço de Token de Redefinição de Senha', () => {
 
   describe('findTokenByUserId', () => {
     it('Deve encontrar um token de redefinição de senha por usuário com sucesso', async () => {
-      const token = await RedefinePasswordTokensServices.createToken(user.id)
+      await RedefinePasswordTokensServices.createToken(user.id)
       const result = await RedefinePasswordTokensServices.findTokenByUserId(
         user.id
       )
@@ -32,7 +32,7 @@ describe('Serviço de Token de Redefinição de Senha', () => {
 
     it('Deve lançar um erro se a busca do token por usuário falhar', async () => {
       try {
-        // @ts-expect-error
+        // @ts-expect-error Teste
         await RedefinePasswordTokensServices.findTokenByUserId(null)
         fail('Erro esperado')
       } catch (error: any) {
@@ -76,7 +76,7 @@ describe('Serviço de Token de Redefinição de Senha', () => {
 
     it('Deve lançar um erro se a criação do token falhar', async () => {
       try {
-        // @ts-expect-error
+        // @ts-expect-error Teste
         await RedefinePasswordTokensServices.createToken(null)
         fail('Erro esperado')
       } catch (error: any) {
@@ -104,7 +104,7 @@ describe('Serviço de Token de Redefinição de Senha', () => {
         await RedefinePasswordTokensServices.sendToken(
           user.email,
           user.name,
-          //@ts-expect-error
+          //@ts-expect-error Teste
           null
         )
         fail('Erro esperado')
@@ -123,7 +123,7 @@ describe('Serviço de Token de Redefinição de Senha', () => {
 
     it('Deve lançar um erro se a atualização do token falhar', async () => {
       try {
-        // @ts-expect-error
+        // @ts-expect-error Teste
         await RedefinePasswordTokensServices.updateToken(null)
         fail('Erro esperado')
       } catch (error: any) {

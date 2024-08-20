@@ -21,11 +21,10 @@ jest.mock('../../src/utils/JwtUtils', () => {
 
 describe('RefreshTokenService', () => {
   let sequelize: Sequelize
-  let refreshToken: RefreshToken
 
   beforeEach(async () => {
     sequelize = await setupSequelize()
-    refreshToken = await RefreshToken.create({
+    await RefreshToken.create({
       expire_date: new Date('2025-01-01'),
       token: signJwt(1, 'Access'),
       user_id: 1,
@@ -137,7 +136,7 @@ describe('RefreshTokenService', () => {
         await RefreshTokenService.updateAccessTokenWithRefreshToken(req as any)
       expect(result).toEqual({
         oldRefreshTokenObject: validatedRefreshToken,
-        newAcessToken: 'token',
+        newAccessToken: 'token',
         newRefreshToken: 'token',
       })
     })

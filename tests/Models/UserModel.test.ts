@@ -57,7 +57,7 @@ describe('User model', () => {
 
   it('Deve retornar erro ao criar usuário sem nome', async () => {
     try {
-      // @ts-expect-error
+      // @ts-expect-error Teste
       await User.create({
         email: 'johndoe@example.com',
         password: 'password123',
@@ -70,7 +70,7 @@ describe('User model', () => {
 
   it('Deve retornar erro ao criar usuário sem email', async () => {
     try {
-      // @ts-expect-error
+      // @ts-expect-error Teste
       await User.create({
         name: 'John Doe',
         password: 'password123',
@@ -84,7 +84,7 @@ describe('User model', () => {
   it('Deve retornar erro ao criar usuário sem senha', async () => {
     try {
       await User.create({
-        name: 'Joh Doe',
+        name: 'John Doe',
         email: 'johnde@example.com',
       })
       fail('Deveria ter retornado erro')
@@ -96,9 +96,9 @@ describe('User model', () => {
   it('Deve buscar usuário por ID', async () => {
     const foundUser = await User.findByPk(user.id)
     expect(foundUser).not.toBeNull()
-    // @ts-ignore
+    // @ts-expect-error Teste
     expect(foundUser.name).toBe('John Doe')
-    // @ts-ignore
+    // @ts-expect-error Teste
     expect(foundUser.email).toBe('johndoe@example.com')
   })
 
@@ -107,9 +107,9 @@ describe('User model', () => {
       where: { email: 'johndoe@example.com' },
     })
     expect(foundUser).not.toBeNull()
-    // @ts-ignore
+    // @ts-expect-error Teste
     expect(foundUser.name).toBe('John Doe')
-    // @ts-ignore
+    // @ts-expect-error Teste
     expect(foundUser.email).toBe('johndoe@example.com')
   })
 })

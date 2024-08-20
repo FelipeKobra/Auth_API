@@ -26,5 +26,5 @@ export default class EmailConfirmToken extends Model<
 
   @Default(null)
   @Column(DataType.TEXT)
-  declare emailVizualizer?: string
+  declare emailVisualizer?: string
 }

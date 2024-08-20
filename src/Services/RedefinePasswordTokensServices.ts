@@ -1,9 +1,8 @@
 import createError from 'http-errors'
-import RedefinePasswordTokens from '../Models/RedefinePasswordTokensModel'
 import { v4 } from 'uuid'
 import { baseUrl } from '../data/URL'
 import emailManager from '../libs/emailManager'
-import checkIfCustomError from '../utils/checkIfCustomError'
+import RedefinePasswordTokens from '../Models/RedefinePasswordTokensModel'
 
 const emailManagerInstance = new emailManager()
 
@@ -62,7 +61,7 @@ export default class RedefinePasswordTokensServices {
     ) {
       throw createError(401, 'Informações de envio de token inválidas')
     }
-    const emailVizualizer = await emailManagerInstance.sendTokenEmail({
+    const emailVisualizer = await emailManagerInstance.sendTokenEmail({
       receiverEmail,
       receiverName,
       titulo: 'Token de Recuperação de Senha',
@@ -70,11 +69,11 @@ export default class RedefinePasswordTokensServices {
       type: 'PasswordReset',
     })
 
-    if (typeof emailVizualizer !== 'string') {
+    if (typeof emailVisualizer !== 'string') {
       throw createError(500, 'Erro durante envio do email')
     }
 
-    return emailVizualizer
+    return emailVisualizer
   }
 
   public static async updateToken(userId: number) {

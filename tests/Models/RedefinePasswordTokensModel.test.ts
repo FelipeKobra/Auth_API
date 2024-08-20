@@ -31,7 +31,7 @@ describe('RedefinePasswordTokens Model', () => {
 
   it('Deve gerar um erro caso o user_id seja nulo', async () => {
     try {
-      // @ts-ignore
+      // @ts-expect-error Teste
       await RedefinePasswordTokens.create({
         token,
         expire_date,

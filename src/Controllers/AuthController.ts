@@ -18,6 +18,7 @@ export default class AuthController {
     try {
       passport.authenticate(
         'google',
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         async function (err: Error, user: User | null, info: IVerifyOptions) {
           if (err) return next(createError(400, 'Erro durante a autenticação'))
 

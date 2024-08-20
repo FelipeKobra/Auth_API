@@ -24,7 +24,7 @@ export default class EmailConfirmTokenController {
 
       if (foundToken && !foundToken.expired && foundToken.tokenObject) {
         return res.json({
-          message: `O token enviado previamente ainda é válido, verifique sua caixa de mensagem ou entre nessa URL: ${(foundToken.tokenObject as EmailConfirmToken).emailVizualizer}`,
+          message: `O token enviado previamente ainda é válido, verifique sua caixa de mensagem ou entre nessa URL: ${(foundToken.tokenObject as EmailConfirmToken).emailVisualizer}`,
         })
       } else if (foundToken && foundToken.expired && foundToken.tokenObject) {
         foundToken = await EmailConfirmTokenService.updateToken(user.id)
@@ -41,7 +41,7 @@ export default class EmailConfirmTokenController {
       )
 
       await EmailConfirmToken.update(
-        { emailVizualizer },
+        { emailVisualizer: emailVizualizer },
         { where: { user_id: user.id } }
       )
 
